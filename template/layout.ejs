@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <%
+      function toRelative(link) {
+        if (!link) return '#';
+        if (link.startsWith('http') || link.startsWith('https') || link.startsWith('//')) return link;
+        if (link.startsWith('#')) return link;
+        
+        let cleanLink = link;
+        if (link.startsWith('/')) {
+            cleanLink = link.substring(1);
+        }
+        
+        // Prepend relativeRoot
+        return (page.relativeRoot || './') + cleanLink;
+      }
+    %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= page.title ? page.title + ' | ' : '' %><%= site.title %></title>
+    <% if (page.frontmatter.layout === 'home' && site.description) { %>
+    <meta name="description" content="<%= site.description %>">
+    <% } else { %>
+    <meta name="description" content="<%= page.description || site.description || '' %>">
+    <% } %>
+    <% if (page.frontmatter.layout === 'home' && site.keywords) { %>
+    <meta name="keywords" content="<%= site.keywords %>">
+    <% } else if (page.frontmatter.keywords) { %>
+    <meta name="keywords" content="<%= page.frontmatter.keywords %>">
+    <% } %>
+    <% if (page.frontmatter.layout) { %>
+    <meta name="layout" content="<%= page.frontmatter.layout %>">
+    <% } %>
+    <% if (page.frontmatter.tag && Array.isArray(page.frontmatter.tag)) { %>
+    <meta name="tag" content="<%= page.frontmatter.tag.join(', ') %>">
+    <% } %>
+    <% if (page.frontmatter.seo) { %>
+    <!-- SEO Custom Tags -->
+    <%- page.frontmatter.seo %>
+    <% } %>
+    <link rel="stylesheet" href="<%= page.relativeRoot %>assets/style.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+    <div class="Layout">
+        <header class="VPNav">
+            <div class="VPNavBar">
+                <div class="container">
+                    <div class="title">
+                        <a href="<%= toRelative('/index.html') %>"><%= site.title %></a>
+                    </div>
+                    <div class="content">
+                        <nav class="nav-links">
+                            <% if (site.themeConfig.nav) { %>
+                                <% site.themeConfig.nav.forEach(function(item) { %>
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="<%= toRelative(item.link) %>"><%= item.text %></a>
+                                    </div>
+                                <% }); %>
+                            <% } %>
+                        </nav>
+                        <% if (site.themeConfig.socialLinks) { %>
+                        <div class="social-links">
+                            <% site.themeConfig.socialLinks.forEach(function(item) { %>
+                                <a class="social-link" href="<%= item.link %>" target="_blank" rel="noopener">
+                                    <%= item.icon %>
+                                </a>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <% if (page.frontmatter.layout === 'home') { %>
+            <main class="VPContent is-home">
+                <div class="VPHome">
+                    <% if (page.frontmatter.hero) { %>
+                    <section class="VPHero">
+                        <div class="container">
+                            <div class="main">
+                                <h1 class="name"><span class="clip"><%= page.frontmatter.hero.name %></span></h1>
+                                <p class="text"><%= page.frontmatter.hero.text %></p>
+                                <p class="tagline"><%= page.frontmatter.hero.tagline %></p>
+                                <% if (page.frontmatter.hero.actions) { %>
+                                <div class="actions">
+                                    <% page.frontmatter.hero.actions.forEach(function(action) { %>
+                                    <div class="action">
+                                        <a class="action-btn <%= action.theme === 'brand' ? 'primary' : 'secondary' %>" href="<%= toRelative(action.link) %>">
+                                            <%= action.text %>
+                                        </a>
+                                    </div>
+                                    <% }); %>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.features) { %>
+                    <section class="VPFeatures">
+                        <div class="container">
+                            <div class="items">
+                                <% page.frontmatter.features.forEach(function(feature) { %>
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        <h2 class="title"><%= feature.title %></h2>
+                                        <p class="details"><%= feature.details %></p>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.gettingStarted) { %>
+                    <section class="HomeSection HomeGettingStarted">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">快速上手</h2>
+                            </div>
+                            <div class="home-grid">
+                                <% page.frontmatter.gettingStarted.forEach(function(item) { %>
+                                <div class="home-card">
+                                    <h3 class="home-card-title"><%= item.title %></h3>
+                                    <p class="home-card-details"><%= item.details %></p>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.useCases) { %>
+                    <section class="HomeSection HomeUseCases">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">典型场景</h2>
+                            </div>
+                            <div class="home-grid">
+                                <% page.frontmatter.useCases.forEach(function(item) { %>
+                                <div class="home-card">
+                                    <h3 class="home-card-title"><%= item.title %></h3>
+                                    <p class="home-card-details"><%= item.details %></p>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.stats) { %>
+                    <section class="HomeSection HomeStats">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">项目数据</h2>
+                            </div>
+                            <div class="stats-list">
+                                <% page.frontmatter.stats.forEach(function(stat) { %>
+                                <div class="stat-item">
+                                    <div class="stat-value"><%= stat.value %></div>
+                                    <div class="stat-label"><%= stat.label %></div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.testimonials) { %>
+                    <section class="HomeSection HomeTestimonials">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">用户评价</h2>
+                            </div>
+                            <div class="testimonials">
+                                <% page.frontmatter.testimonials.forEach(function(t) { %>
+                                <div class="testimonial-item">
+                                    <p class="testimonial-quote">“<%= t.quote %>”</p>
+                                    <p class="testimonial-meta">
+                                        <span class="testimonial-author"><%= t.author %></span>
+                                        <% if (t.role) { %>
+                                        <span class="testimonial-role"> · <%= t.role %></span>
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.logos) { %>
+                    <section class="HomeSection HomeLogos">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">谁在使用</h2>
+                            </div>
+                            <div class="logos">
+                                <% page.frontmatter.logos.forEach(function(logo) { %>
+                                <a class="logo-item" href="<%= logo.link %>" target="_blank" rel="noopener">
+                                    <span class="logo-name"><%= logo.name %></span>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.faq) { %>
+                    <section class="HomeSection HomeFAQ">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">常见问题</h2>
+                            </div>
+                            <div class="faq-list">
+                                <% page.frontmatter.faq.forEach(function(item) { %>
+                                <div class="faq-item">
+                                    <div class="faq-question"><%= item.question %></div>
+                                    <div class="faq-answer"><%= item.answer %></div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.resources) { %>
+                    <section class="HomeSection HomeResources">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">更多资源</h2>
+                            </div>
+                            <div class="links-grid">
+                                <% page.frontmatter.resources.forEach(function(resource) { %>
+                                <a class="link-card" href="<%= resource.link %>">
+                                    <div class="link-title"><%= resource.title %></div>
+                                    <% if (resource.description) { %>
+                                    <p class="link-description"><%= resource.description %></p>
+                                    <% } %>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.community) { %>
+                    <section class="HomeSection HomeCommunity">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">加入社区</h2>
+                            </div>
+                            <div class="links-inline">
+                                <% page.frontmatter.community.forEach(function(link) { %>
+                                <a class="link-pill" href="<%= link.link %>" target="_blank" rel="noopener">
+                                    <span class="link-pill-label"><%= link.label %></span>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.changelog) { %>
+                    <section class="HomeSection HomeChangelog">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">更新日志</h2>
+                            </div>
+                            <div class="timeline">
+                                <% page.frontmatter.changelog.forEach(function(entry) { %>
+                                <div class="timeline-item">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-version"><%= entry.version %></span>
+                                        <% if (entry.date) { %>
+                                        <span class="timeline-date"><%= entry.date %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="timeline-summary"><%= entry.summary %></div>
+                                    <% if (entry.link) { %>
+                                    <a class="timeline-link" href="<%= toRelative(entry.link) %>">查看详情</a>
+                                    <% } %>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.roadmap) { %>
+                    <section class="HomeSection HomeRoadmap">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">产品路线图</h2>
+                            </div>
+                            <div class="roadmap-grid">
+                                <% page.frontmatter.roadmap.forEach(function(item) { %>
+                                <div class="roadmap-item">
+                                    <div class="roadmap-title-row">
+                                        <span class="roadmap-title"><%= item.title %></span>
+                                        <% if (item.status) { %>
+                                        <span class="roadmap-status"><%= item.status %></span>
+                                        <% } %>
+                                    </div>
+                                    <% if (item.timeframe) { %>
+                                    <div class="roadmap-timeframe"><%= item.timeframe %></div>
+                                    <% } %>
+                                    <% if (item.description) { %>
+                                    <p class="roadmap-description"><%= item.description %></p>
+                                    <% } %>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <div class="vp-doc container">
+                        <% if (page.steps && page.steps.length > 0) { %>
+                        <div class="mdp-step-timeline">
+                            <% page.steps.forEach(function(step, index) { %>
+                            <div class="mdp-step-item">
+                                <div class="mdp-step-item-index"><%= index + 1 %></div>
+                                <div class="mdp-step-item-content">
+                                    <h2 class="mdp-step-title"><%= step.title %></h2>
+                                    <% if (step.kind === 'tab') { %>
+                                    <div class="mdp-step-tabs">
+                                        <div class="mdp-step-tabs-nav">
+                                            <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                            <button class="mdp-step-tab <%= tabIndex === 0 ? 'mdp-step-tab-active' : '' %>" 
+                                                    onclick="switchStepTab(this, '<%= step.id %>', <%= tabIndex %>)">
+                                                <%= tab.label %>
+                                            </button>
+                                            <% }); %>
+                                        </div>
+                                        <div class="mdp-step-tab-body">
+                                            <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                            <div class="mdp-step-tab-content" id="<%= step.id %>-tab-<%= tabIndex %>" style="display: <%= tabIndex === 0 ? 'block' : 'none' %>">
+                                                <% if (tab.description) { %>
+                                                <p class="mdp-step-tab-description"><%= tab.description %></p>
+                                                <% } %>
+                                                <% if (tab.linkLabel && tab.linkUrl) { %>
+                                                <a href="<%= tab.linkUrl %>" class="mdp-step-tab-link" target="_blank"><%= tab.linkLabel %> →</a>
+                                                <% } %>
+                                            </div>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                    <% if (step.warning) { %>
+                                    <div class="mdp-step-warning">
+                                        <span class="mdp-step-warning-icon">!</span>
+                                        <span class="mdp-step-warning-text"><%= step.warning %></span>
+                                    </div>
+                                    <% } %>
+                                    <% } else { %>
+                                    <ol class="mdp-step-list">
+                                        <% step.items.forEach(function(item) { %>
+                                        <li class="mdp-step-list-item">
+                                            <div class="mdp-step-list-title"><%= item.title %></div>
+                                            <% if (item.details) { %>
+                                            <div class="mdp-step-list-details"><%= item.details %></div>
+                                            <% } %>
+                                        </li>
+                                        <% }); %>
+                                    </ol>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                        <%- page.content %>
+                    </div>
+                </div>
+            </main>
+        <% } else { %>
+            <div class="VPContent is-doc">
+                <aside class="VPSidebar">
+                    <nav class="VPSidebarNav">
+                        <% 
+                        let sidebarItems = [];
+                        if (site.themeConfig.sidebar) {
+                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html')));
+                            const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
+                            // Sort keys by length desc to match longest prefix first
+                            const keys = Object.keys(site.themeConfig.sidebar).sort((a, b) => b.length - a.length);
+                            for (const path of keys) {
+                                if (currentPath.startsWith(path) || (path === '/' && currentPath === '/')) {
+                                    sidebarItems = site.themeConfig.sidebar[path];
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (sidebarItems && sidebarItems.length > 0) {
+                            sidebarItems.forEach(function(group) {
+                        %>
+                            <div class="group">
+                                <div class="group-header">
+                                    <div class="group-title"><%= group.text %></div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="group-items">
+                                    <% if (group.items) { %>
+                                        <% group.items.forEach(function(item) { 
+                                            const currentLink = page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html'));
+                                            const isActive = item.link === currentLink;
+                                        %>
+                                            <a class="link <%= isActive ? 'active' : '' %>" href="<%= toRelative(item.link) %>">
+                                                <p class="link-text"><%= item.text %></p>
+                                            </a>
+                                        <% }); %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% 
+                            });
+                        } else {
+                        %>
+                            <!-- Fallback sidebar or empty -->
+                            <div class="group">
+                                <div class="group-title">Menu</div>
+                                <a class="link" href="<%= toRelative('/index.html') %>">Home</a>
+                            </div>
+                        <% } %>
+                    </nav>
+                </aside>
+                
+                <div class="VPContentDoc">
+                     <main>
+                        <div class="vp-doc">
+                            
+                            <% if (page.title) { %>
+                            <h1 id="<%= page.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') %>"><%= page.title %></h1>
+                            <% } %>
+
+                            <% if (page.frontmatter.tag || page.frontmatter.category) { %>
+                            <div class="meta-info" style="margin-bottom: 24px; color: var(--vp-c-text-2); font-size: 14px;">
+                                <% if (page.frontmatter.category) { %>
+                                <span style="font-weight: 600; margin-right: 10px;">Category: <%= page.frontmatter.category %></span>
+                                <% } %>
+                                <% if (page.frontmatter.tag) { %>
+                                <span class="tags">
+                                    <% 
+                                       const tags = Array.isArray(page.frontmatter.tag) ? page.frontmatter.tag : [page.frontmatter.tag];
+                                       tags.forEach(function(tag) { 
+                                    %>
+                                    <span class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px;"><%= tag %></span>
+                                    <% }); %>
+                                </span>
+                                <% } %>
+                            </div>
+                            <% } %>
+
+                            <% if (page.steps && page.steps.length > 0) { %>
+                            <div class="mdp-step-timeline">
+                                <% page.steps.forEach(function(step, index) { %>
+                                <div class="mdp-step-item">
+                                    <div class="mdp-step-item-index"><%= index + 1 %></div>
+                                    <div class="mdp-step-item-content">
+                                        <h2 class="mdp-step-title"><%= step.title %></h2>
+                                        <% if (step.kind === 'tab') { %>
+                                        <div class="mdp-step-tabs">
+                                            <div class="mdp-step-tabs-nav">
+                                                <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                                <button class="mdp-step-tab <%= tabIndex === 0 ? 'mdp-step-tab-active' : '' %>" 
+                                                        onclick="switchStepTab(this, '<%= step.id %>', <%= tabIndex %>)">
+                                                    <%= tab.label %>
+                                                </button>
+                                                <% }); %>
+                                            </div>
+                                            <div class="mdp-step-tab-body">
+                                                <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                                <div class="mdp-step-tab-content" id="<%= step.id %>-tab-<%= tabIndex %>" style="display: <%= tabIndex === 0 ? 'block' : 'none' %>">
+                                                    <% if (tab.description) { %>
+                                                    <p class="mdp-step-tab-description"><%= tab.description %></p>
+                                                    <% } %>
+                                                    <% if (tab.linkLabel && tab.linkUrl) { %>
+                                                    <a href="<%= tab.linkUrl %>" class="mdp-step-tab-link" target="_blank"><%= tab.linkLabel %> →</a>
+                                                    <% } %>
+                                                </div>
+                                                <% }); %>
+                                            </div>
+                                        </div>
+                                        <% if (step.warning) { %>
+                                        <div class="mdp-step-warning">
+                                            <span class="mdp-step-warning-icon">!</span>
+                                            <span class="mdp-step-warning-text"><%= step.warning %></span>
+                                        </div>
+                                        <% } %>
+                                        <% } else { %>
+                                        <ol class="mdp-step-list">
+                                            <% step.items.forEach(function(item) { %>
+                                            <li class="mdp-step-list-item">
+                                                <div class="mdp-step-list-title"><%= item.title %></div>
+                                                <% if (item.details) { %>
+                                                <div class="mdp-step-list-details"><%= item.details %></div>
+                                                <% } %>
+                                            </li>
+                                            <% }); %>
+                                        </ol>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                            <% } %>
+                            <%- page.content %>
+                        </div>
+                     </main>
+                     
+                     <% if (site.themeConfig.footer) { %>
+                     <footer class="VPFooter">
+                        <% if (site.themeConfig.footer.message) { %>
+                        <p class="message"><%= site.themeConfig.footer.message %></p>
+                        <% } %>
+                        <% if (site.themeConfig.footer.copyright) { %>
+                        <p class="copyright"><%= site.themeConfig.footer.copyright %></p>
+                        <% } %>
+                     </footer>
+                     <% } %>
+                </div>
+
+                <% if (page.headers && page.headers.length > 0) { %>
+                <aside class="VPRightSidebar">
+                    <div class="VPRightSidebar-content">
+                        <div class="outline-title">On this page</div>
+                        <nav class="outline-links">
+                            <% page.headers.forEach(function(header) { %>
+                                <% if (header.level >= 2 && header.level <= 3) { %>
+                                <a class="outline-link level-<%= header.level %>" href="#<%= header.slug %>"><%= header.title %></a>
+                                <% } %>
+                            <% }); %>
+                        </nav>
+                    </div>
+                </aside>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+    <script>
+        (function() {
+            // Hamburger Menu
+            var menuToggle = document.querySelector('.menu-toggle');
+            var body = document.body;
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    if (body.classList.contains('nav-open')) {
+                        body.classList.remove('nav-open');
+                    } else {
+                        body.classList.add('nav-open');
+                    }
+                });
+            }
+
+            // Dark Mode Toggle
+            var appearanceToggle = document.querySelector('.VPSwitchAppearance');
+            var sunIcon = document.querySelector('.VPSwitchAppearance .sun');
+            var moonIcon = document.querySelector('.VPSwitchAppearance .moon');
+            
+            function updateIcon(isDark) {
+                if (sunIcon) sunIcon.style.display = isDark ? 'block' : 'none';
+                if (moonIcon) moonIcon.style.display = isDark ? 'none' : 'block';
+            }
+
+            // Init icon
+            updateIcon(document.documentElement.classList.contains('dark'));
+
+            if (appearanceToggle) {
+                appearanceToggle.addEventListener('click', function() {
+                    var isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('mdpress-theme', isDark ? 'dark' : 'light');
+                    updateIcon(isDark);
+                });
+            }
+
+
+            // Scroll Spy & TOC Features
+            (function() {
+                var contentDoc = document.querySelector('.VPContentDoc .vp-doc');
+                if (!contentDoc) return;
+
+                var headers = Array.from(contentDoc.querySelectorAll('h2[id], h3[id]'));
+                var outlineLinks = document.querySelectorAll('.VPRightSidebar .outline-link');
+                var activeId = '';
+                var isClickScrolling = false; // Flag to prevent observer updates during click scroll
+
+                // Throttle Utility
+                function throttle(func, limit) {
+                    var inThrottle;
+                    return function() {
+                        var args = arguments;
+                        var context = this;
+                        if (!inThrottle) {
+                            func.apply(context, args);
+                            inThrottle = true;
+                            setTimeout(function() { inThrottle = false; }, limit);
+                        }
+                    }
+                }
+
+                // Update Active State in Sidebar
+                function updateSidebar(id) {
+                    if (!id || isClickScrolling) return;
+                    if (activeId === id) return;
+                    
+                    activeId = id;
+                    
+                    // Update URL hash without jumping (throttled)
+                    updateHash(id);
+
+                    // Update classes
+                    var activeLink = null;
+                    outlineLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                        var href = link.getAttribute('href');
+                        if (href && (href === '#' + id || decodeURIComponent(href) === '#' + id)) {
+                            link.classList.add('active');
+                            activeLink = link;
+                        }
+                    });
+
+                    // Auto-scroll sidebar
+                    if (activeLink) {
+                        var sidebarContent = document.querySelector('.VPRightSidebar-content');
+                        if (sidebarContent) {
+                            var linkRect = activeLink.getBoundingClientRect();
+                            var sidebarRect = sidebarContent.getBoundingClientRect();
+                            if (linkRect.top < sidebarRect.top + 32) {
+                                sidebarContent.scrollTop += (linkRect.top - sidebarRect.top - 32);
+                            } else if (linkRect.bottom > sidebarRect.bottom - 32) {
+                                sidebarContent.scrollTop += (linkRect.bottom - sidebarRect.bottom + 32);
+                            }
+                        }
+                    }
+                }
+
+                // Throttled Hash Update
+                var updateHash = throttle(function(id) {
+                    if (history.replaceState) {
+                        history.replaceState(null, null, '#' + id);
+                    }
+                }, 300);
+
+                // IntersectionObserver for Scroll Spy
+                if (window.IntersectionObserver && headers.length > 0) {
+                    var observerOptions = {
+                        root: null,
+                        rootMargin: '-100px 0px -60% 0px', // Trigger when header is near top
+                        threshold: 0
+                    };
+
+                    var observer = new IntersectionObserver(function(entries) {
+                        // Find the entry that is intersecting and closest to top
+                        // Or simply: if an entry intersects, it's a candidate.
+                        // We need to handle direction.
+                        // A simple heuristic: The last intersecting entry in the list (bottom-most in DOM) 
+                        // that is currently intersecting is usually the one "in view" if we look at the top area.
+                        // But with -60% bottom margin, we only see the top part of screen.
+                        
+                        // Let's filter visible entries
+                        var visibleEntries = entries.filter(function(e) { return e.isIntersecting; });
+                        
+                        if (visibleEntries.length > 0) {
+                            // If multiple are visible in the top strip, usually the first one (top-most) is the one we want?
+                            // No, if we have [H2 ... H3], and both are in strip, H2 is above H3.
+                            // If we scroll down, H2 leaves, H3 remains.
+                            // So we pick the one with smallest boundingClientRect.top that is > 0?
+                            // Let's just pick the first intersecting entry from the DOM order.
+                            
+                            // We need to map entries back to DOM order
+                            var visibleIds = visibleEntries.map(function(e) { return e.target.id; });
+                            
+                            // Find the first header in DOM that is in visibleIds
+                            var firstVisible = headers.find(function(h) { return visibleIds.includes(h.id); });
+                            if (firstVisible) {
+                                updateSidebar(firstVisible.id);
+                            }
+                        } else {
+                            // If no headers are in the strip (e.g. we are inside a long section),
+                            // we should find the last header that is ABOVE the viewport.
+                            // IntersectionObserver doesn't give us "above" vs "below" easily without check.
+                            // Fallback to checking positions for all headers if IO comes up empty?
+                            // Or simpler: Just rely on the "enter" events.
+                            // But "enter" events miss the "scrolled past" case on load.
+                            
+                            // Let's use a hybrid: On IO callback, if nothing intersecting, check positions.
+                            checkActivePosition();
+                        }
+                    }, observerOptions);
+
+                    headers.forEach(function(header) { observer.observe(header); });
+                    
+                    // Initial check
+                    checkActivePosition();
+                } else {
+                    // Fallback for no IO
+                    window.addEventListener('scroll', throttle(checkActivePosition, 100));
+                }
+
+                function checkActivePosition() {
+                    if (isClickScrolling) return;
+                    
+                    var topOffset = 100;
+                    var currentActive = null;
+                    
+                    // Check if at bottom
+                    if ((window.innerHeight + Math.ceil(window.scrollY)) >= document.body.offsetHeight - 10) {
+                        if (headers.length > 0) currentActive = headers[headers.length - 1];
+                    } else {
+                        // Find last header above topOffset
+                        for (var i = 0; i < headers.length; i++) {
+                            var rect = headers[i].getBoundingClientRect();
+                            if (rect.top <= topOffset) {
+                                currentActive = headers[i];
+                            } else {
+                                break; // Headers are ordered, so we can stop
+                            }
+                        }
+                    }
+
+                    if (currentActive) {
+                        updateSidebar(currentActive.id);
+                    } else if (headers.length > 0) {
+                        // If no header is above (at very top), highlight first
+                         updateSidebar(headers[0].id);
+                    }
+                }
+
+                // Smooth Scroll on Click
+                document.querySelectorAll('.VPRightSidebar .outline-link').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var href = this.getAttribute('href');
+                        if (!href || !href.startsWith('#')) return;
+                        var id = href.substring(1);
+                        var target = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+                        
+                        if (target) {
+                            isClickScrolling = true;
+                            // Remove active from others, add to this
+                            outlineLinks.forEach(function(l) { l.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeId = id;
+                            updateHash(id);
+
+                            var offset = 80; // Nav height + padding
+                            var top = target.getBoundingClientRect().top + window.scrollY - offset;
+                            
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+
+                            // Re-enable observer after scroll (approximate duration)
+                            setTimeout(function() { isClickScrolling = false; }, 1000);
+                        }
+                    });
+                });
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', function(e) {
+                    // Only if sidebar exists
+                    if (outlineLinks.length === 0) return;
+                    
+                    // Up/Down arrows
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        // Find current active index
+                        var currentIndex = -1;
+                        for (var i = 0; i < outlineLinks.length; i++) {
+                            if (outlineLinks[i].classList.contains('active')) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (currentIndex === -1 && outlineLinks.length > 0) currentIndex = 0;
+
+                        var nextIndex = currentIndex;
+                        if (e.key === 'ArrowDown') {
+                            nextIndex = Math.min(currentIndex + 1, outlineLinks.length - 1);
+                        } else if (e.key === 'ArrowUp') {
+                            nextIndex = Math.max(currentIndex - 1, 0);
+                        }
+
+                        if (nextIndex !== currentIndex) {
+                            e.preventDefault();
+                            outlineLinks[nextIndex].click(); // Trigger the click handler
+                        }
+                    }
+                });
+
+            })();
+
+            // Layout Fixer
+            function fixLayout() {
+                // Force Sidebar Top Position
+                var sidebar = document.querySelector('.VPSidebar');
+                if (sidebar) {
+                     sidebar.style.setProperty('top', '64px', 'important');
+                }
+                
+                // Force Right Sidebar Top Position
+                var rightSidebar = document.querySelector('.VPRightSidebar');
+                if (rightSidebar) {
+                     rightSidebar.style.setProperty('top', '64px', 'important');
+                }
+            }
+            window.addEventListener('resize', fixLayout);
+            window.addEventListener('load', function() {
+                fixLayout();
+                setTimeout(fixLayout, 100);
+            });
+            fixLayout();
+
+            // Move Category/Tag to below Title
+            function moveMeta() {
+                var doc = document.querySelector('.vp-doc');
+                if (doc) {
+                    var title = doc.querySelector('h1');
+                    var meta = doc.querySelector('.meta-info');
+                    if (title && meta) {
+                        title.after(meta);
+                        meta.style.marginBottom = '24px';
+                        meta.style.marginTop = '16px';
+                        meta.style.display = 'block'; // Ensure visibility
+                    } else if (meta && !title) {
+                        // If no title found (rare), maybe try to insert at top or keep as is?
+                        // For now, let's just ensure it's visible.
+                        meta.style.marginBottom = '24px';
+                    }
+                }
+            }
+            
+            // Execute immediately and on load/DOMReady
+            moveMeta();
+            window.addEventListener('DOMContentLoaded', moveMeta);
+            window.addEventListener('load', moveMeta);
+
+            // Sidebar Toggle
+            document.querySelectorAll('.VPSidebar .group-header').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    var group = header.parentElement;
+                    group.classList.toggle('collapsed');
+                });
+            });
+        })();
+    </script>
+    <script>
+        function switchStepTab(button, stepId, tabIndex) {
+            const tabsContainer = button.closest('.mdp-step-tabs');
+            const buttons = tabsContainer.querySelectorAll('.mdp-step-tab');
+            buttons.forEach(btn => btn.classList.remove('mdp-step-tab-active'));
+            button.classList.add('mdp-step-tab-active');
+            
+            const contents = tabsContainer.querySelectorAll('.mdp-step-tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            
+            const targetContent = tabsContainer.querySelector(`#${stepId}-tab-${tabIndex}`);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
