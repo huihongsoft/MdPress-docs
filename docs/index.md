@@ -1,6 +1,6 @@
 ---
 layout: home
-title: 欢迎使用MdPress
+title: 欢迎使用
 slug: 
 tag: []
 description: A powerful static site generator
