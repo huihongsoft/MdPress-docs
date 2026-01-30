@@ -303,24 +303,52 @@
                     <% } %>
 
                     <% if (page.frontmatter.changelog) { %>
-                    <section class="HomeSection HomeChangelog">
+                    <section class="VPFeatures" style="padding-top: 24px;">
                         <div class="container">
-                            <div class="section-header">
-                                <h2 class="section-title">更新日志</h2>
+                            <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                                <h2 class="section-title" style="font-size: 24px; font-weight: 600;">更新日志</h2>
                             </div>
-                            <div class="timeline">
-                                <% page.frontmatter.changelog.forEach(function(entry) { %>
-                                <div class="timeline-item">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-version"><%= entry.version %></span>
-                                        <% if (entry.date) { %>
-                                        <span class="timeline-date"><%= entry.date %></span>
+                            <div class="items">
+                                <% page.frontmatter.changelog.forEach(function(item) { %>
+                                <div class="item">
+                                    <div class="VPFeature" style="height: 100%; display: flex; flex-direction: column;">
+                                        <% if (item.image) { %>
+                                        <div style="margin-bottom: 16px;">
+                                            <img src="<%= item.image %>" alt="<%= item.title || item.version || '' %>" style="width: 100%; border-radius: 8px; border: 1px solid var(--vp-c-divider);">
+                                        </div>
+                                        <% } %>
+                                        <% if (item.video) { %>
+                                        <div style="margin-bottom: 16px;">
+                                            <video controls style="width: 100%; border-radius: 8px;">
+                                                <source src="<%= item.video %>" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        <% } %>
+                                        
+                                        <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                                            <% if (item.date) { %>
+                                            <div style="font-size: 14px; color: var(--vp-c-text-2); font-weight: 500;"><%= item.date %></div>
+                                            <% } %>
+                                            <% if (item.tag) { %>
+                                            <div style="padding: 2px 8px; border-radius: 4px; background-color: var(--vp-c-bg-alt); color: var(--vp-c-brand); font-size: 12px; font-weight: 600;"><%= item.tag %></div>
+                                            <% } %>
+                                        </div>
+
+                                        <h2 class="title" style="margin: 0 0 8px; font-size: 18px; font-weight: 600; line-height: 1.4; border: none; padding: 0;"><%= item.title || item.version %></h2>
+                                        
+                                        <% if (item.description || item.summary) { %>
+                                        <p class="details" style="font-size: 14px; color: var(--vp-c-text-2); line-height: 1.6; flex-grow: 1; margin-bottom: 16px;"><%= item.description || item.summary %></p>
+                                        <% } %>
+                                        
+                                        <% if (item.link) { %>
+                                        <div style="margin-top: auto;">
+                                            <a href="<%= toRelative(item.link) %>" target="_blank" rel="noreferrer" style="color: var(--vp-c-brand); font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                                View details &rarr;
+                                            </a>
+                                        </div>
                                         <% } %>
                                     </div>
-                                    <div class="timeline-summary"><%= entry.summary %></div>
-                                    <% if (entry.link) { %>
-                                    <a class="timeline-link" href="<%= toRelative(entry.link) %>">查看详情</a>
-                                    <% } %>
                                 </div>
                                 <% }); %>
                             </div>
@@ -504,6 +532,21 @@
                                     <% } %>
                                 </div>
                                 <div class="changelog-page-content-col">
+                                    <% if (entry.image) { %>
+                                    <div class="changelog-page-media" style="margin-bottom: 16px;">
+                                        <img src="<%= toRelative(entry.image) %>" alt="<%= entry.title %>">
+                                    </div>
+                                    <% } %>
+                                    
+                                    <% if (entry.video) { %>
+                                    <div class="changelog-page-media" style="margin-bottom: 16px;">
+                                        <video controls style="width: 100%; border-radius: 8px;">
+                                            <source src="<%= toRelative(entry.video) %>" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                    <% } %>
+
                                     <h2 class="changelog-page-title"><%= entry.title %></h2>
                                     
                                     <% if (entry.description) { %>
@@ -512,21 +555,6 @@
 
                                     <% if (entry.tag) { %>
                                     <div class="changelog-page-tag"><%= entry.tag %></div>
-                                    <% } %>
-
-                                    <% if (entry.image) { %>
-                                    <div class="changelog-page-media">
-                                        <img src="<%= toRelative(entry.image) %>" alt="<%= entry.title %>">
-                                    </div>
-                                    <% } %>
-                                    
-                                    <% if (entry.video) { %>
-                                    <div class="changelog-page-media">
-                                        <video controls style="width: 100%; border-radius: 8px;">
-                                            <source src="<%= toRelative(entry.video) %>" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </div>
                                     <% } %>
                                 </div>
                             </div>
