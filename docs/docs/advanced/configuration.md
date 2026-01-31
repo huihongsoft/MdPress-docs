@@ -2,7 +2,7 @@
 layout: 
 title: Configuration
 slug: 
-tag: []
+tag: [advanced,guard]
 description: Advanced configuration
 keywords: static site, generator, typescript, mdpress
 category: Guide

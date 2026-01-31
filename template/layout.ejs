@@ -501,6 +501,184 @@
                     </div>
                 </div>
             </main>
+        <% } else if (page.frontmatter.layout === 'tags') { %>
+            <div class="VPContent is-doc is-tags">
+                <aside class="VPSidebar">
+                    <nav class="VPSidebarNav">
+                        <% 
+                        let sidebarItems = [];
+                        if (site.themeConfig.sidebar) {
+                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html')));
+                            const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
+                            // Sort keys by length desc to match longest prefix first
+                            const keys = Object.keys(site.themeConfig.sidebar).sort((a, b) => b.length - a.length);
+                            for (const path of keys) {
+                                if (currentPath.startsWith(path) || (path === '/' && currentPath === '/')) {
+                                    sidebarItems = site.themeConfig.sidebar[path];
+                                    break;
+                                }
+                            }
+
+                            // Fix for tags page: if no sidebar matched, try to use /docs/ or the first available sidebar
+                            if ((!sidebarItems || sidebarItems.length === 0) && page.frontmatter.layout === 'tags') {
+                                if (site.themeConfig.sidebar['/docs/']) {
+                                    sidebarItems = site.themeConfig.sidebar['/docs/'];
+                                } else if (site.themeConfig.sidebar['/']) {
+                                    sidebarItems = site.themeConfig.sidebar['/'];
+                                } else if (keys.length > 0) {
+                                    sidebarItems = site.themeConfig.sidebar[keys[0]];
+                                }
+                            }
+                        }
+                        
+                        if (sidebarItems && sidebarItems.length > 0) {
+                            sidebarItems.forEach(function(group) {
+                        %>
+                            <div class="group">
+                                <div class="group-header">
+                                    <div class="group-title"><%= group.text %></div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <div class="group-items">
+                                    <% if (group.items) { %>
+                                        <% group.items.forEach(function(item) { 
+                                            const currentLink = page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html'));
+                                            const isActive = item.link === currentLink;
+                                        %>
+                                            <a class="link <%= isActive ? 'active' : '' %>" href="<%= toRelative(item.link) %>">
+                                                <p class="link-text"><%= item.text %></p>
+                                            </a>
+                                        <% }); %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% 
+                            });
+                        } else {
+                        %>
+                            <!-- Fallback sidebar or empty -->
+                            <div class="group">
+                                <div class="group-title">Menu</div>
+                                <a class="link" href="<%= toRelative('/index.html') %>">Home</a>
+                            </div>
+                        <% } %>
+                    </nav>
+                </aside>
+                <div class="VPContentDoc">
+                    <main>
+                        <div class="vp-doc">
+                            <h1 id="tags-title">Tags</h1>
+                            <div class="custom-block tip" style="margin-bottom: 2rem; background-color: transparent; border: none; padding: 0;">
+                                 <div id="tags-cloud" class="tags-cloud-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                     <% if (page.tags) { %>
+                                         <% Object.keys(page.tags).forEach(function(tag) { %>
+                                         <a class="tag-link" href="?tag=<%= tag %>" data-tag="<%= tag %>" 
+                                            style="padding: 4px 12px; background: var(--vp-c-bg-soft); border-radius: 16px; color: var(--vp-c-text-1); text-decoration: none; font-size: 14px; transition: all 0.2s; border: 1px solid transparent;">
+                                             <%= tag %> <span style="color: var(--vp-c-text-3); font-size: 0.8em;">(<%= page.tags[tag].length %>)</span>
+                                         </a>
+                                         <% }); %>
+                                     <% } %>
+                                 </div>
+                            </div>
+                            <div id="tags-content">
+                                <div class="custom-block tip">
+                                    <p class="custom-block-title">Select a tag</p>
+                                    <p>Please select a tag to view related articles.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+            <script>
+                (function() {
+            // Debug: 打印原始接收到的数据
+            console.log('Client Side Debug Start');
+            var rawTagsData = <%- JSON.stringify(page.tags || {}) %>;
+            console.log('Received tagsData:', rawTagsData);
+            
+            var tagsData = rawTagsData;
+            var urlParams = new URLSearchParams(window.location.search);
+                    var currentTag = urlParams.get('tag');
+                    
+                    function renderArticles(tag) {
+                        var container = document.getElementById('tags-content');
+                        var title = document.getElementById('tags-title');
+                        
+                        if (!tag || !tagsData[tag]) {
+                            title.textContent = 'Tags';
+                            return; 
+                        }
+                        
+                        title.textContent = 'Tag: ' + tag;
+                        
+                        var articles = tagsData[tag];
+                        var html = '<div class="links-grid">';
+                        
+                        articles.forEach(function(article) {
+                             var link = article.link;
+                             // Basic fix for link if it doesn't start with ./ or /
+                             if (!link.startsWith('./') && !link.startsWith('/') && !link.startsWith('http')) {
+                                 link = './' + link;
+                             }
+                             
+                             html += '<a class="link-card" href="' + link + '">';
+                             html += '<div class="link-title">' + article.title + '</div>';
+                             if (article.description) {
+                                 html += '<p class="link-description">' + article.description + '</p>';
+                             }
+                             if (article.date) {
+                                 html += '<p class="link-meta" style="font-size: 0.8em; color: var(--vp-c-text-2); margin-top: 8px;">' + new Date(article.date).toLocaleDateString() + '</p>';
+                             }
+                             html += '</a>';
+                        });
+                        
+                        html += '</div>';
+                        container.innerHTML = html;
+                    }
+                    
+                    var links = document.querySelectorAll('.tag-link');
+                    
+                    function updateActiveTag(tag) {
+                        links.forEach(l => {
+                            if (l.getAttribute('data-tag') === tag) {
+                                l.style.borderColor = 'var(--vp-c-brand)';
+                                l.style.color = 'var(--vp-c-brand)';
+                                l.style.background = 'var(--vp-c-bg-alt)';
+                            } else {
+                                l.style.borderColor = 'transparent';
+                                l.style.color = 'var(--vp-c-text-1)';
+                                l.style.background = 'var(--vp-c-bg-soft)';
+                            }
+                        });
+                    }
+
+                    links.forEach(function(link) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            var newTag = this.getAttribute('data-tag');
+                            var newUrl = window.location.pathname + '?tag=' + newTag;
+                            window.history.pushState({path: newUrl}, '', newUrl);
+                            
+                            updateActiveTag(newTag);
+                            renderArticles(newTag);
+                        });
+                    });
+                    
+                    if (currentTag) {
+                        updateActiveTag(currentTag);
+                        renderArticles(currentTag);
+                    }
+                    
+                    window.onpopstate = function() {
+                        var t = new URLSearchParams(window.location.search).get('tag');
+                        updateActiveTag(t);
+                        renderArticles(t);
+                    };
+                })();
+            </script>
         <% } else if (page.frontmatter.layout === 'changelog') { %>
             <main class="VPContent is-changelog">
                 <div class="VPHome">
@@ -631,21 +809,20 @@
                             <h1 id="<%= page.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') %>"><%= page.title %></h1>
                             <% } %>
 
-                            <% if (page.frontmatter.tag || page.frontmatter.category) { %>
+                            <% 
+                               const pageTags = page.frontmatter.tag || page.frontmatter.tags;
+                               if (pageTags) { 
+                            %>
                             <div class="meta-info" style="margin-bottom: 24px; color: var(--vp-c-text-2); font-size: 14px;">
-                                <% if (page.frontmatter.category) { %>
-                                <span style="font-weight: 600; margin-right: 10px;">Category: <%= page.frontmatter.category %></span>
-                                <% } %>
-                                <% if (page.frontmatter.tag) { %>
+                                <span style="font-weight: 600; margin-right: 10px;">Tags:</span>
                                 <span class="tags">
                                     <% 
-                                       const tags = Array.isArray(page.frontmatter.tag) ? page.frontmatter.tag : [page.frontmatter.tag];
-                                       tags.forEach(function(tag) { 
+                                       const tagsList = Array.isArray(pageTags) ? pageTags : [pageTags];
+                                       tagsList.forEach(function(tag) { 
                                     %>
-                                    <span class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px;"><%= tag %></span>
+                                    <a href="<%= toRelative('/tags.html') %>?tag=<%= tag %>" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;"><%= tag %></a>
                                     <% }); %>
                                 </span>
-                                <% } %>
                             </div>
                             <% } %>
 

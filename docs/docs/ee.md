@@ -2,7 +2,7 @@
 layout: 
 title: Basic Concepts
 slug: 
-tag: [advanced,basic]
+tag: []
 description: Core concepts of MdPress
 keywords: static site, generator, typescript, mdpress
 category: Guide
