@@ -505,10 +505,17 @@
             <div class="VPContent is-doc is-tags">
                 <aside class="VPSidebar">
                     <nav class="VPSidebarNav">
+                        <!-- DEBUG INFO START -->
+                        <div style="font-size: 10px; color: red; padding: 10px; background: #ffebeb; border-bottom: 1px solid #ffcccc; word-break: break-all; margin-bottom: 10px;">
+                            <strong>Debug (v2025-02-01-FIX-3):</strong><br>
+                            Path: "<%= (page.htmlLink || ('/' + page.relativePath.replace(/\\/g, '/').replace(/\.md$/, '.html'))).replace(/index\.html$/, '') || '/' %>"<br>
+                            Sidebar Keys: [<%= Object.keys(site.themeConfig.sidebar || {}).join(', ') %>]<br>
+                        </div>
+                        <!-- DEBUG INFO END -->
                         <% 
                         let sidebarItems = [];
                         if (site.themeConfig.sidebar) {
-                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html')));
+                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\\/g, '/').replace(/\.md$/, '.html')));
                             const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
                             // Sort keys by length desc to match longest prefix first
                             const keys = Object.keys(site.themeConfig.sidebar).sort((a, b) => b.length - a.length);
@@ -592,18 +599,84 @@
                     </main>
                 </div>
             </div>
+            <div id="debug-console" style="background: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin: 20px; font-family: monospace; font-size: 12px; max-height: 200px; overflow: auto; display: block;">
+                <strong>Debug Console (v2025-02-01-FIX):</strong><br>
+            </div>
             <script>
+                console.log('Layout Script Loaded - v2025-02-01-FIX');
                 (function() {
-            // Debug: 打印原始接收到的数据
-            console.log('Client Side Debug Start');
-            var rawTagsData = <%- JSON.stringify(page.tags || {}) %>;
-            console.log('Received tagsData:', rawTagsData);
-            
-            var tagsData = rawTagsData;
-            var urlParams = new URLSearchParams(window.location.search);
-                    var currentTag = urlParams.get('tag');
+                    function debug(msg) {
+                        console.log(msg);
+                        var el = document.getElementById('debug-console');
+                        if (el) {
+                            var line = document.createElement('div');
+                            line.textContent = msg;
+                            el.appendChild(line);
+                        }
+                    }
                     
-                    function renderArticles(tag) {
+                    try {
+                        debug('Script initialized');
+                        
+                        var rawTagsData = <%- JSON.stringify(page.tags || {}) %>;
+                        debug('Tags data loaded: ' + Object.keys(rawTagsData).length + ' tags');
+                        
+                        var tagsData = rawTagsData;
+                        var sidebarConfig = <%- JSON.stringify(site.themeConfig.sidebar || {}) %>;
+                        debug('Sidebar config keys: ' + Object.keys(sidebarConfig).join(', '));
+                        
+                        var urlParams = new URLSearchParams(window.location.search);
+                        var currentTag = urlParams.get('tag');
+                        var currentContext = urlParams.get('context');
+                        
+                        debug('Current Tag: ' + currentTag);
+                        debug('Current Context: ' + currentContext);
+
+                        // Render Sidebar if context provided
+                        if (currentContext) {
+                            if (sidebarConfig[currentContext]) {
+                                debug('Found sidebar for context: ' + currentContext);
+                                var sidebarItems = sidebarConfig[currentContext];
+                                var nav = document.querySelector('.VPSidebarNav');
+                                if (nav) {
+                                    debug('Found .VPSidebarNav, rendering sidebar...');
+                                    var html = '';
+                                    sidebarItems.forEach(function(group) {
+                                        html += '<div class="group">';
+                                        html += '<div class="group-header">';
+                                        html += '<div class="group-title">' + group.text + '</div>';
+                                        html += '<svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>';
+                                        html += '</div>';
+                                        html += '<div class="group-items">';
+                                        if (group.items) {
+                                            group.items.forEach(function(item) {
+                                                var link = item.link;
+                                                if (!link.startsWith('http') && !link.startsWith('/')) {
+                                                    link = '/' + link;
+                                                }
+                                                html += '<a class="link" href="' + link + '">';
+                                                html += '<p class="link-text">' + item.text + '</p>';
+                                                html += '</a>';
+                                            });
+                                        }
+                                        html += '</div>';
+                                        html += '</div>';
+                                    });
+                                    nav.innerHTML = html;
+                                    debug('Sidebar rendered successfully');
+                                } else {
+                                    debug('Error: .VPSidebarNav element not found');
+                                }
+                            } else {
+                                debug('Error: No sidebar config found for context: ' + currentContext);
+                            }
+                        } else {
+                            debug('No context provided in URL');
+                        }
+                        
+                        function renderArticles(tag) {
+                            // ... existing renderArticles logic ...
+
                         var container = document.getElementById('tags-content');
                         var title = document.getElementById('tags-title');
                         
@@ -659,7 +732,11 @@
                         link.addEventListener('click', function(e) {
                             e.preventDefault();
                             var newTag = this.getAttribute('data-tag');
+                            var currentContext = new URLSearchParams(window.location.search).get('context');
                             var newUrl = window.location.pathname + '?tag=' + newTag;
+                            if (currentContext) {
+                                newUrl += '&context=' + encodeURIComponent(currentContext);
+                            }
                             window.history.pushState({path: newUrl}, '', newUrl);
                             
                             updateActiveTag(newTag);
@@ -677,6 +754,11 @@
                         updateActiveTag(t);
                         renderArticles(t);
                     };
+                    
+                    } catch (e) {
+                        debug('Error: ' + e.message);
+                        console.error(e);
+                    }
                 })();
             </script>
         <% } else if (page.frontmatter.layout === 'changelog') { %>
@@ -752,6 +834,7 @@
                     <nav class="VPSidebarNav">
                         <% 
                         let sidebarItems = [];
+                        let activeSidebarContext = '';
                         if (site.themeConfig.sidebar) {
                             const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html')));
                             const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
@@ -760,6 +843,7 @@
                             for (const path of keys) {
                                 if (currentPath.startsWith(path) || (path === '/' && currentPath === '/')) {
                                     sidebarItems = site.themeConfig.sidebar[path];
+                                    activeSidebarContext = path;
                                     break;
                                 }
                             }
@@ -813,6 +897,7 @@
                                const pageTags = page.frontmatter.tag || page.frontmatter.tags;
                                if (pageTags) { 
                             %>
+                            <!-- DEBUG: currentPath=<%= page.htmlLink %>, activeSidebarContext=<%= activeSidebarContext %> -->
                             <div class="meta-info" style="margin-bottom: 24px; color: var(--vp-c-text-2); font-size: 14px;">
                                 <span style="font-weight: 600; margin-right: 10px;">Tags:</span>
                                 <span class="tags">
@@ -820,7 +905,7 @@
                                        const tagsList = Array.isArray(pageTags) ? pageTags : [pageTags];
                                        tagsList.forEach(function(tag) { 
                                     %>
-                                    <a href="<%= toRelative('/tags.html') %>?tag=<%= tag %>" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;"><%= tag %></a>
+                                    <a href="<%= toRelative('/tags.html') %>?tag=<%= tag %><%= activeSidebarContext ? '&context=' + encodeURIComponent(activeSidebarContext) : '' %>" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;"><%= tag %></a>
                                     <% }); %>
                                 </span>
                             </div>

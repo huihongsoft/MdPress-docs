@@ -74,14 +74,14 @@ a:hover { color: var(--vp-c-brand); }
   border-bottom: 1px solid var(--vp-c-divider);
   transition: background-color 0.5s, border-color 0.5s;
 }
-.VPNavBar { display: flex; height: 100%; align-items: center; padding: 0 32px; }
+.VPNavBar { display: flex; height: 100%; align-items: center; padding: 0; }
 .container {
   width: 100%;
   max-width: 1376px;
   margin: 0 auto;
   padding: 0 24px;
 }
-.VPNavBar .container { display: flex; justify-content: space-between; align-items: center; padding: 0; }
+.VPNavBar .container { display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
 .VPNavBar .title a { font-weight: 600; font-size: 16px; color: var(--vp-c-text-1); display: flex; align-items: center; }
 .VPNavBar .content { display: flex; align-items: center; gap: 24px; }
 .VPNavBar .nav-links { display: flex; gap: 24px; font-size: 14px; font-weight: 500; }
@@ -228,7 +228,7 @@ a:hover { color: var(--vp-c-brand); }
 }
 
 .VPRightSidebar-content {
-  padding: 32px 24px;
+  padding: 32px 0 32px 24px;
   overflow-y: auto;
   height: auto;
   max-height: calc(100vh - var(--vp-nav-height));
