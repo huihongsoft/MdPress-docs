@@ -63,7 +63,7 @@
                         <% if (site.themeConfig.socialLinks) { %>
                         <div class="social-links">
                             <% site.themeConfig.socialLinks.forEach(function(item) { %>
-                                <a class="social-link" href="<%= item.link %>" target="_blank" rel="noopener">
+                                <a class="social-link" href="<%= toRelative(item.link) %>" target="_blank" rel="noopener">
                                     <%= item.icon %>
                                 </a>
                             <% }); %>
@@ -315,7 +315,7 @@
                             </div>
                             <div class="logos">
                                 <% page.frontmatter.logos.forEach(function(logo) { %>
-                                <a class="logo-item" href="<%= logo.link %>" target="_blank" rel="noopener">
+                                <a class="logo-item" href="<%= toRelative(logo.link) %>" target="_blank" rel="noopener">
                                     <span class="logo-name"><%= logo.name %></span>
                                 </a>
                                 <% }); %>
@@ -350,7 +350,7 @@
                             </div>
                             <div class="links-grid">
                                 <% page.frontmatter.resources.forEach(function(resource) { %>
-                                <a class="link-card" href="<%= resource.link %>">
+                                <a class="link-card" href="<%= toRelative(resource.link) %>">
                                     <div class="link-title"><%= resource.title %></div>
                                     <% if (resource.description) { %>
                                     <p class="link-description"><%= resource.description %></p>
@@ -370,7 +370,7 @@
                             </div>
                             <div class="links-inline">
                                 <% page.frontmatter.community.forEach(function(link) { %>
-                                <a class="link-pill" href="<%= link.link %>" target="_blank" rel="noopener">
+                                <a class="link-pill" href="<%= toRelative(link.link) %>" target="_blank" rel="noopener">
                                     <span class="link-pill-label"><%= link.label %></span>
                                 </a>
                                 <% }); %>
@@ -706,6 +706,20 @@
             <script>
                 console.log('Layout Script Loaded - v2025-02-01-FIX');
                 (function() {
+                    var relativeRoot = "<%= page.relativeRoot || './' %>";
+                    
+                    function toRelative(link) {
+                        if (!link) return '#';
+                        if (link.startsWith('http') || link.startsWith('https') || link.startsWith('//')) return link;
+                        if (link.startsWith('#')) return link;
+                        
+                        var cleanLink = link;
+                        if (link.startsWith('/')) {
+                            cleanLink = link.substring(1);
+                        }
+                        return relativeRoot + cleanLink;
+                    }
+
                     function debug(msg) {
                         console.log(msg);
                         var el = document.getElementById('debug-console');
@@ -753,11 +767,7 @@
                                         html += '<div class="group-items">';
                                         if (group.items) {
                                             group.items.forEach(function(item) {
-                                                var link = item.link;
-                                                if (!link.startsWith('http') && !link.startsWith('/')) {
-                                                    link = '/' + link;
-                                                }
-                                                html += '<a class="link" href="' + link + '">';
+                                                html += '<a class="link" href="' + toRelative(item.link) + '">';
                                                 html += '<p class="link-text">' + item.text + '</p>';
                                                 html += '</a>';
                                             });
@@ -794,13 +804,7 @@
                         var html = '<div class="links-grid">';
                         
                         articles.forEach(function(article) {
-                             var link = article.link;
-                             // Basic fix for link if it doesn't start with ./ or /
-                             if (!link.startsWith('./') && !link.startsWith('/') && !link.startsWith('http')) {
-                                 link = './' + link;
-                             }
-                             
-                             html += '<a class="link-card" href="' + link + '">';
+                             html += '<a class="link-card" href="' + toRelative(article.link) + '">';
                              html += '<div class="link-title">' + article.title + '</div>';
                              if (article.description) {
                                  html += '<p class="link-description">' + article.description + '</p>';

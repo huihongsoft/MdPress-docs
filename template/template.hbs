@@ -15,7 +15,7 @@
         <div class="logo">{{site.title}}</div>
         <nav class="nav">
           {{#each site.themeConfig.nav}}
-            <a href="{{this.link}}" class="nav-link">{{this.text}}</a>
+            <a href="{{toRelative this.link}}" class="nav-link">{{this.text}}</a>
           {{/each}}
         </nav>
         <div class="header-actions">
@@ -36,7 +36,7 @@
             <p class="hero-subtitle">{{or page.frontmatter.hero.text page.frontmatter.hero.subtitle}}</p>
             <div class="hero-actions">
               {{#each page.frontmatter.hero.actions}}
-                <a href="{{or this.link this.href}}" class="btn btn-{{or this.theme 'brand'}} btn-lg">{{or this.text this.label}}</a>
+                <a href="{{toRelative (or this.link this.href)}}" class="btn btn-{{or this.theme 'brand'}} btn-lg">{{or this.text this.label}}</a>
               {{/each}}
             </div>
             <div class="hero-meta">{{or page.frontmatter.hero.meta site.themeConfig.footer.copyright}}</div>
@@ -230,7 +230,7 @@
                 {{/if}}
                 <div class="sidebar-group-items">
                   {{#each this.items}}
-                    <a href="{{this.link}}" class="sidebar-link {{#if (eq this.link ../../page.htmlLink)}}active{{/if}}">
+                    <a href="{{toRelative this.link}}" class="sidebar-link {{#if (eq this.link ../../page.htmlLink)}}active{{/if}}">
                       {{this.text}}
                     </a>
                   {{/each}}
@@ -250,7 +250,7 @@
           {{#if (or page.prev page.next)}}
           <div class="page-footer-nav">
             {{#if page.prev}}
-              <a href="{{page.prev.link}}" class="nav-prev">
+              <a href="{{toRelative page.prev.link}}" class="nav-prev">
                 <span class="nav-desc">← Previous</span>
                 <span class="nav-title">{{page.prev.text}}</span>
               </a>
@@ -259,7 +259,7 @@
             {{/if}}
             
             {{#if page.next}}
-              <a href="{{page.next.link}}" class="nav-next">
+              <a href="{{toRelative page.next.link}}" class="nav-next">
                 <span class="nav-title">{{page.next.text}}</span>
                 <span class="nav-desc">Next →</span>
               </a>
@@ -310,7 +310,7 @@
                 <div class="platform-name">{{this.name}}</div>
                 <div class="platform-actions">
                   {{#each this.variants}}
-                    <a href="{{this.url}}" class="btn btn-sm">{{this.label}}</a>
+                    <a href="{{toRelative this.url}}" class="btn btn-sm">{{this.label}}</a>
                   {{/each}}
                 </div>
               </div>
