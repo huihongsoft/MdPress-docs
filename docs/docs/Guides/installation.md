@@ -1,0 +1,38 @@
+---
+title: 安装与设置
+---
+
+# 安装与设置
+
+MdPress 支持 Windows、macOS 和 Linux 三大主流操作系统。
+
+## 系统要求
+
+- **Windows**: Windows 10 或更高版本 (x64, arm64)。
+- **macOS**: macOS 10.15 Catalina 或更高版本 (x64, arm64/M1/M2)。
+- **Linux**: Ubuntu 20.04+, Fedora 32+, Debian 11+ (x64, arm64)。
+
+## 下载与安装
+
+请前往 [MdPress 官网](https://www.imarkdown.net) 下载对应您系统的安装包。
+
+- **Windows**: 下载 `.exe` 安装程序，双击运行即可。
+- **macOS**: 下载 `.dmg` 镜像文件，将 MdPress 拖入 Applications 文件夹。
+- **Linux**: 提供 `.deb` (Debian/Ubuntu) 和 `.AppImage` (通用) 格式。
+
+## 初始设置
+
+首次启动 MdPress 后，您可以进行以下个性化设置：
+
+### 1. 切换语言
+MdPress 支持多语言界面（English, 简体中文, Français, 日本語, 한국어 等）。
+- 点击左下角的设置图标（齿轮状）。
+- 选择 **Language**，在列表中选择您偏好的语言。
+
+### 2. 外观主题
+MdPress 提供明亮（Light）和暗黑（Dark）两种外观模式。
+- 点击界面右上角或左下角的 **主题切换按钮**（太阳/月亮图标）即可即时切换。
+
+### 3. 创建第一个工作区
+- 点击侧边栏的 **Sites**（站点）图标。
+- 点击 **New Site** 或 **Open Folder** 开始您的创作之旅。

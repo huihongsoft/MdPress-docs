@@ -81,12 +81,36 @@
                     <section class="VPHero">
                         <div class="container">
                             <div class="main">
-                                <h1 class="name"><span class="clip"><%= page.frontmatter.hero.name %></span></h1>
-                                <p class="text"><%= page.frontmatter.hero.text %></p>
-                                <p class="tagline"><%= page.frontmatter.hero.tagline %></p>
-                                <% if (page.frontmatter.hero.actions) { %>
+                                <h1 class="name"><span class="clip"><%= page.frontmatter.hero.name || page.frontmatter.hero.title %></span></h1>
+                                <p class="text"><%= page.frontmatter.hero.text || page.frontmatter.hero.subtitle %></p>
+                                <p class="tagline"><%= page.frontmatter.hero.tagline || page.frontmatter.hero.badge %></p>
+                                <%
+                                    let heroActions = [];
+                                    if (page.frontmatter.hero.actions) {
+                                        if (Array.isArray(page.frontmatter.hero.actions)) {
+                                            heroActions = page.frontmatter.hero.actions;
+                                        } else if (typeof page.frontmatter.hero.actions === 'object') {
+                                            const actions = page.frontmatter.hero.actions;
+                                            if (actions.primary) {
+                                                heroActions.push({
+                                                    text: actions.primary.label,
+                                                    link: actions.primary.href || (actions.primary.targetId ? '#' + actions.primary.targetId : '#'),
+                                                    theme: 'brand'
+                                                });
+                                            }
+                                            if (actions.secondary) {
+                                                heroActions.push({
+                                                    text: actions.secondary.label,
+                                                    link: actions.secondary.href || (actions.secondary.targetId ? '#' + actions.secondary.targetId : '#'),
+                                                    theme: 'alt'
+                                                });
+                                            }
+                                        }
+                                    }
+                                %>
+                                <% if (heroActions.length > 0) { %>
                                 <div class="actions">
-                                    <% page.frontmatter.hero.actions.forEach(function(action) { %>
+                                    <% heroActions.forEach(function(action) { %>
                                     <div class="action">
                                         <a class="action-btn <%= action.theme === 'brand' ? 'primary' : 'secondary' %>" href="<%= toRelative(action.link) %>">
                                             <%= action.text %>
@@ -95,23 +119,69 @@
                                     <% }); %>
                                 </div>
                                 <% } %>
+                                
+                                <% if (page.frontmatter.hero.meta) { %>
+                                <div class="meta"><%= page.frontmatter.hero.meta %></div>
+                                <% } %>
                             </div>
+                            <% 
+                                const heroPreview = page.frontmatter.hero.preview || page.frontmatter.preview;
+                            %>
+                            <% if (page.frontmatter.hero.image) { %>
+                            <div class="image">
+                                <div class="image-container">
+                                    <img src="<%= toRelative(page.frontmatter.hero.image.src || page.frontmatter.hero.image) %>" alt="<%= page.frontmatter.hero.image.alt || 'hero image' %>">
+                                </div>
+                            </div>
+                            <% } else if (heroPreview) { %>
+                            <div class="preview">
+                                <div class="preview-wrapper">
+                                    <div class="preview-header">
+                                        <%= heroPreview.header %>
+                                    </div>
+                                    <div class="preview-container">
+                                        <div class="preview-editor">
+                                            <div class="preview-filename"><%= heroPreview.editor.filename %></div>
+                                            <pre class="preview-code"><%= heroPreview.editor.content %></pre>
+                                        </div>
+                                        <div class="preview-render">
+                                            <div class="preview-render-title"><%= heroPreview.render.title %></div>
+                                            <ul>
+                                                <% heroPreview.render.items.forEach(function(item) { %>
+                                                <li><%= item %></li>
+                                                <% }); %>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
                         </div>
                     </section>
                     <% } %>
 
-                    <% if (page.frontmatter.features) { %>
+                    <%
+                        let features = [];
+                        if (page.frontmatter.features) {
+                            if (Array.isArray(page.frontmatter.features)) {
+                                features = page.frontmatter.features;
+                            } else if (Array.isArray(page.frontmatter.features.items)) {
+                                features = page.frontmatter.features.items;
+                            }
+                        }
+                    %>
+                    <% if (features.length > 0) { %>
                     <section class="VPFeatures">
                         <div class="container">
                             <div class="items">
-                                <% page.frontmatter.features.forEach(function(feature) { %>
+                                <% features.forEach(function(feature) { %>
                                 <div class="item">
                                     <div class="VPFeature">
                                         <% if (feature.category) { %>
                                         <div class="feature-category"><%= feature.category %></div>
                                         <% } %>
                                         <h2 class="title"><%= feature.title %></h2>
-                                        <p class="details"><%= feature.details %></p>
+                                        <p class="details"><%= feature.details || feature.description %></p>
                                     </div>
                                 </div>
                                 <% }); %>
@@ -143,8 +213,8 @@
                         <div class="container">
                             <div class="workflow-grid">
                                 <div class="workflow-content">
-                                    <h2 class="section-title"><%= page.frontmatter.workflow.title %></h2>
-                                    <p class="section-subtitle"><%= page.frontmatter.workflow.subtitle %></p>
+                                    <h2 class="section-title"><%= page.frontmatter.workflow.title || page.frontmatter.workflow.sectionTitle %></h2>
+                                    <p class="section-subtitle"><%= page.frontmatter.workflow.subtitle || page.frontmatter.workflow.sectionSubtitle %></p>
                                     <ol class="workflow-steps">
                                         <% page.frontmatter.workflow.steps.forEach(function(step) { %>
                                         <li class="workflow-step"><%= step %></li>
@@ -166,27 +236,34 @@
                     </section>
                     <% } %>
 
-                    <% if (page.frontmatter.useCases) { %>
+                    <% 
+                        const useCasesData = page.frontmatter.useCases || page.frontmatter.usecases;
+                    %>
+                    <% if (useCasesData) { 
+                        const ucItems = useCasesData.cards || useCasesData.items || (Array.isArray(useCasesData) ? useCasesData : []);
+                    %>
+                    <% if (ucItems.length > 0) { %>
                     <section class="HomeSection HomeUseCases" id="usecases">
                         <div class="container">
                             <div class="section-header">
-                                <h2 class="section-title"><%= page.frontmatter.useCases.title || '典型场景' %></h2>
-                                <% if (page.frontmatter.useCases.subtitle) { %>
-                                <p class="section-subtitle"><%= page.frontmatter.useCases.subtitle %></p>
+                                <h2 class="section-title"><%= useCasesData.sectionTitle || useCasesData.title || '典型场景' %></h2>
+                                <% if (useCasesData.sectionSubtitle || useCasesData.subtitle) { %>
+                                <p class="section-subtitle"><%= useCasesData.sectionSubtitle || useCasesData.subtitle %></p>
                                 <% } %>
                             </div>
                             <div class="home-grid">
-                                <% (page.frontmatter.useCases.items || page.frontmatter.useCases).forEach(function(item) { %>
+                                <% ucItems.forEach(function(item) { %>
                                 <div class="home-card">
                                     <div class="home-card-content">
                                         <h3 class="home-card-title"><%= item.title %></h3>
-                                        <p class="home-card-details"><%= item.details %></p>
+                                        <p class="home-card-details"><%= item.details || item.description %></p>
                                     </div>
                                 </div>
                                 <% }); %>
                             </div>
                         </div>
                     </section>
+                    <% } %>
                     <% } %>
 
                     <% if (page.frontmatter.stats) { %>
@@ -384,16 +461,21 @@
                     </section>
                     <% } %>
 
-                    <% if (page.frontmatter.download) { %>
+                    <% if (page.frontmatter.download) { 
+                        const downloadData = page.frontmatter.download;
+                        const downloadItems = Array.isArray(downloadData) ? downloadData : (downloadData.platforms || downloadData.items || []);
+                        const modalTitle = (downloadData.modalTitle) ? downloadData.modalTitle : ('下载 ' + site.title);
+                    %>
+                    <% if (downloadItems.length > 0) { %>
                     <div id="download-modal" class="modal-overlay" style="display: none;">
                         <div class="modal-container">
                             <div class="modal-header">
-                                <h3 class="modal-title">下载 <%= site.title %></h3>
+                                <h3 class="modal-title"><%= modalTitle %></h3>
                                 <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
                             </div>
                             <div class="modal-body">
                                 <div class="download-grid">
-                                    <% page.frontmatter.download.forEach(function(option) { %>
+                                    <% downloadItems.forEach(function(option) { %>
                                     <div class="download-card">
                                         <div class="download-icon"><%- option.icon %></div>
                                         <div class="download-name"><%= option.name %></div>
@@ -441,6 +523,7 @@
                             });
                         });
                     </script>
+                    <% } %>
                     <% } %>
 
                     <div class="vp-doc container">
@@ -499,6 +582,22 @@
                         <% } %>
                         <%- page.content %>
                     </div>
+                    
+                    <% 
+                        const footer = page.frontmatter.footer || site.themeConfig.footer;
+                    %>
+                    <% if (footer) { %>
+                    <footer class="VPFooter">
+                        <div class="container">
+                            <% if (footer.brand || footer.message) { %>
+                            <p class="message"><%= footer.brand || footer.message %></p>
+                            <% } %>
+                            <% if (footer.meta || footer.copyright) { %>
+                            <p class="copyright"><%= footer.meta || footer.copyright %></p>
+                            <% } %>
+                        </div>
+                    </footer>
+                    <% } %>
                 </div>
             </main>
         <% } else if (page.frontmatter.layout === 'tags') { %>
@@ -542,12 +641,14 @@
                             sidebarItems.forEach(function(group) {
                         %>
                             <div class="group">
+                                <% if (group.text) { %>
                                 <div class="group-header">
                                     <div class="group-title"><%= group.text %></div>
                                     <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
                                     </svg>
                                 </div>
+                                <% } %>
                                 <div class="group-items">
                                     <% if (group.items) { %>
                                         <% group.items.forEach(function(item) { 
@@ -643,10 +744,12 @@
                                     var html = '';
                                     sidebarItems.forEach(function(group) {
                                         html += '<div class="group">';
-                                        html += '<div class="group-header">';
-                                        html += '<div class="group-title">' + group.text + '</div>';
-                                        html += '<svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>';
-                                        html += '</div>';
+                                        if (group.text) {
+                                            html += '<div class="group-header">';
+                                            html += '<div class="group-title">' + group.text + '</div>';
+                                            html += '<svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>';
+                                            html += '</div>';
+                                        }
                                         html += '<div class="group-items">';
                                         if (group.items) {
                                             group.items.forEach(function(item) {
@@ -853,12 +956,14 @@
                             sidebarItems.forEach(function(group) {
                         %>
                             <div class="group">
+                                <% if (group.text) { %>
                                 <div class="group-header">
                                     <div class="group-title"><%= group.text %></div>
                                     <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
                                     </svg>
                                 </div>
+                                <% } %>
                                 <div class="group-items">
                                     <% if (group.items) { %>
                                         <% group.items.forEach(function(item) { 

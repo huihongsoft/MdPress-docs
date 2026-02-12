@@ -1,0 +1,86 @@
+---
+title: 内容组织与管理
+---
+
+# 内容组织与管理
+
+MdPress 提倡“约定优于配置”的内容管理理念。
+
+## 目录结构规范
+
+一个健康的 MdPress 项目结构清晰、层次分明：
+
+```text
+my-site/
+├── docs/               # 文档源目录 (Source Root)
+│   ├── Guide/          # 栏目 A
+│   │   ├── intro.md
+│   │   └── installation.md
+│   ├── Blog/           # 栏目 B
+│   │   ├── 2023/
+│   │   │   └── new-feature.md
+│   │   └── index.md    # Blog 栏目首页
+│   ├── assets/         # 静态资源目录
+│   │   ├── images/
+│   │   └── styles/
+│   └── index.md        # 站点首页
+├── config.json         # 站点全局配置
+└── dist/               # 构建输出目录 (Build Output)
+```
+
+## 静态资源管理
+
+### 图片与附件
+
+推荐将所有静态资源统一存放在 `docs/assets` 目录下。
+
+**引用方式**:
+在 Markdown 中，始终使用**相对路径**引用资源。
+
+```markdown
+<!-- 正确：MdPress 会在构建时自动解析并复制文件 -->
+![架构图](../assets/images/architecture.png)
+
+<!-- 错误：绝对路径在部署到子目录时会失效 -->
+![架构图](/assets/images/architecture.png)
+```
+
+### 视频嵌入
+
+您可以使用标准 HTML 标签嵌入本地或网络视频：
+
+```html
+<video controls width="100%">
+  <source src="../assets/videos/demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+```
+
+## 文档元数据 (Frontmatter)
+
+Frontmatter 是位于 Markdown 文件顶部的 YAML 块，用于定义页面级配置。
+
+```yaml
+---
+title: 页面标题
+description: 页面描述，用于 SEO meta 标签
+date: 2023-10-25 14:00:00
+head:
+  - - meta
+    - name: keywords
+      content: mdpress, documentation, static site
+layout: doc # 可选: doc (默认), home, page
+outline: deep # 控制右侧大纲深度
+---
+```
+
+### 常用字段详解
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `title` | string | 覆盖文件名作为页面标题，显示在浏览器标签页和导航中。 |
+| `description` | string | 页面的 meta description，对 SEO 至关重要。 |
+| `date` | string | 文章发布时间，某些主题会显示并在列表中排序。 |
+| `layout` | string | 指定页面布局模板。`home` 为首页布局，`doc` 为文档布局。 |
+| `sidebar` | boolean/string | `false` 隐藏侧边栏，或指定特定的侧边栏组名。 |
+| `outline` | boolean/number/string | `false` 隐藏右侧大纲，`deep` 或数字指定大纲深度。 |

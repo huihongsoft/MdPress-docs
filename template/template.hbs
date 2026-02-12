@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{#if page.title}}{{page.title}} | {{/if}}{{site.title}}</title>
+  <meta name="description" content="{{site.description}}">
+  <link rel="stylesheet" href="{{page.relativeRoot}}assets/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">{{site.title}}</div>
+        <nav class="nav">
+          {{#each site.themeConfig.nav}}
+            <a href="{{this.link}}" class="nav-link">{{this.text}}</a>
+          {{/each}}
+        </nav>
+        <div class="header-actions">
+           <!-- Optional: Add header actions if needed, or remove if not in standard config -->
+        </div>
+      </div>
+    </header>
+
+    {{#if (eq page.frontmatter.layout 'home')}}
+      <!-- Landing Page Mode -->
+      
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="container hero-inner">
+          <div class="hero-content">
+            <div class="badge">{{or page.frontmatter.hero.tagline page.frontmatter.hero.badge}}</div>
+            <h1 class="hero-title">{{or page.frontmatter.hero.name page.frontmatter.hero.title}}</h1>
+            <p class="hero-subtitle">{{or page.frontmatter.hero.text page.frontmatter.hero.subtitle}}</p>
+            <div class="hero-actions">
+              {{#each page.frontmatter.hero.actions}}
+                <a href="{{or this.link this.href}}" class="btn btn-{{or this.theme 'brand'}} btn-lg">{{or this.text this.label}}</a>
+              {{/each}}
+            </div>
+            <div class="hero-meta">{{or page.frontmatter.hero.meta site.themeConfig.footer.copyright}}</div>
+          </div>
+          {{#if page.frontmatter.hero.preview}}
+          <div class="hero-preview">
+            <div class="window-frame">
+              <div class="window-header">
+                <div class="window-controls">
+                  <span class="control red"></span>
+                  <span class="control yellow"></span>
+                  <span class="control green"></span>
+                </div>
+                <div class="window-title">{{page.frontmatter.hero.preview.header}}</div>
+              </div>
+              <div class="window-body">
+                <div class="editor-pane">
+                  <div class="pane-header">{{page.frontmatter.hero.preview.editor.filename}}</div>
+                  <div class="code-content">
+                    <pre><code>{{page.frontmatter.hero.preview.editor.content}}</code></pre>
+                  </div>
+                </div>
+                <div class="preview-pane">
+                  <div class="pane-header">{{page.frontmatter.hero.preview.render.title}}</div>
+                  <div class="render-content">
+                    <h1>{{page.frontmatter.hero.preview.render.title}}</h1>
+                    <ul>
+                      {{#each page.frontmatter.hero.preview.render.items}}
+                        <li>{{this}}</li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/if}}
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features" class="section features-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">{{or page.frontmatter.features.sectionTitle 'Features'}}</h2>
+            {{#if page.frontmatter.features.sectionSubtitle}}
+            <p class="section-subtitle">{{page.frontmatter.features.sectionSubtitle}}</p>
+            {{/if}}
+          </div>
+          <div class="features-grid">
+            {{#each (or page.frontmatter.features.items page.frontmatter.features)}}
+              <div class="feature-card">
+                <div class="feature-icon {{this.icon}}"></div>
+                <h3 class="feature-title">{{or this.title this.header}}</h3>
+                <p class="feature-desc">{{or this.details this.description}}</p>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </section>
+
+      <!-- Workflow -->
+      {{#if page.frontmatter.workflow}}
+      <section id="workflow" class="section workflow-section">
+        <div class="container">
+          <div class="workflow-container">
+            <div class="workflow-steps">
+              <div class="workflow-header">
+                <h2 class="section-title workflow-title">{{page.frontmatter.workflow.sectionTitle}}</h2>
+                <p class="section-subtitle workflow-subtitle">{{page.frontmatter.workflow.sectionSubtitle}}</p>
+              </div>
+              {{#each page.frontmatter.workflow.steps}}
+                <div class="step-item">
+                  <div class="step-number">{{add @index 1}}</div>
+                  <div class="step-content">{{this}}</div>
+                </div>
+              {{/each}}
+            </div>
+            <div class="workflow-panel">
+              <h3>{{page.frontmatter.workflow.panel.title}}</h3>
+              <ul>
+                {{#each page.frontmatter.workflow.panel.items}}
+                  <li>{{this}}</li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      {{/if}}
+
+      <!-- Use Cases -->
+      {{#if page.frontmatter.usecases}}
+      <section id="usecases" class="section usecases-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">{{page.frontmatter.usecases.sectionTitle}}</h2>
+            <p class="section-subtitle">{{page.frontmatter.usecases.sectionSubtitle}}</p>
+          </div>
+          <div class="usecases-grid">
+            {{#each page.frontmatter.usecases.cards}}
+              <div class="usecase-card">
+                <h3>{{this.title}}</h3>
+                <p>{{this.description}}</p>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </section>
+      {{/if}}
+
+    {{else}}
+      {{#if (eq page.frontmatter.layout 'changelog')}}
+      <!-- Changelog Mode -->
+      <main class="VPContent is-changelog">
+        <div class="VPHome">
+          <section class="hero-section" style="padding-bottom: 40px;">
+            <div class="container">
+              <div class="section-header">
+                {{#if page.title}}
+                <h1 class="hero-title" style="font-size: 48px; justify-content: center; text-align: center;">{{page.title}}</h1>
+                {{/if}}
+                {{#if page.description}}
+                <p class="hero-subtitle" style="margin: 0 auto; text-align: center;">{{page.description}}</p>
+                {{/if}}
+              </div>
+            </div>
+          </section>
+
+          <div class="container">
+            {{#if page.frontmatter.changelog}}
+            <div class="changelog-timeline-page">
+              {{#each page.frontmatter.changelog}}
+              <div class="changelog-page-item">
+                <div class="changelog-page-date-col">
+                  <div class="changelog-page-date">{{this.date}}</div>
+                </div>
+                <div class="changelog-page-marker-col">
+                  <div class="changelog-page-dot"></div>
+                  {{#unless @last}}
+                  <div class="changelog-page-line"></div>
+                  {{/unless}}
+                </div>
+                <div class="changelog-page-content-col">
+                  {{#if this.image}}
+                  <div class="changelog-page-media" style="margin-bottom: 16px;">
+                    <img src="{{toRelative this.image}}" alt="{{this.title}}">
+                  </div>
+                  {{/if}}
+                  
+                  {{#if this.video}}
+                  <div class="changelog-page-media" style="margin-bottom: 16px;">
+                    <video controls style="width: 100%; border-radius: 8px;">
+                      <source src="{{toRelative this.video}}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  {{/if}}
+
+                  <h2 class="changelog-page-title">{{this.title}}</h2>
+                  
+                  {{#if this.description}}
+                  <div class="changelog-page-desc">{{this.description}}</div>
+                  {{/if}}
+
+                  {{#if this.tag}}
+                  <div class="changelog-page-tag">{{this.tag}}</div>
+                  {{/if}}
+                </div>
+              </div>
+              {{/each}}
+            </div>
+            {{/if}}
+            
+            <div class="markdown-body">
+              {{{page.content}}}
+            </div>
+          </div>
+        </div>
+      </main>
+      {{else}}
+      <!-- Content Mode -->
+      <div class="container main-container {{#if page.sidebarItems}}has-sidebar{{/if}} {{#if page.headers}}has-toc{{/if}}">
+        {{#if page.sidebarItems}}
+        <aside class="sidebar">
+          <nav class="sidebar-nav">
+            {{#each page.sidebarItems}}
+              <div class="sidebar-group">
+                {{#if this.text}}
+                <div class="sidebar-group-title">{{this.text}}</div>
+                {{/if}}
+                <div class="sidebar-group-items">
+                  {{#each this.items}}
+                    <a href="{{this.link}}" class="sidebar-link {{#if (eq this.link ../../page.htmlLink)}}active{{/if}}">
+                      {{this.text}}
+                    </a>
+                  {{/each}}
+                </div>
+              </div>
+            {{/each}}
+          </nav>
+        </aside>
+        {{/if}}
+        
+        <main class="content">
+          <div class="markdown-body">
+            {{{page.content}}}
+          </div>
+
+          <!-- Page Footer (Prev/Next) -->
+          {{#if (or page.prev page.next)}}
+          <div class="page-footer-nav">
+            {{#if page.prev}}
+              <a href="{{page.prev.link}}" class="nav-prev">
+                <span class="nav-desc">← Previous</span>
+                <span class="nav-title">{{page.prev.text}}</span>
+              </a>
+            {{else}}
+              <div class="nav-prev-placeholder"></div>
+            {{/if}}
+            
+            {{#if page.next}}
+              <a href="{{page.next.link}}" class="nav-next">
+                <span class="nav-title">{{page.next.text}}</span>
+                <span class="nav-desc">Next →</span>
+              </a>
+            {{/if}}
+          </div>
+          {{/if}}
+        </main>
+
+        {{#if page.headers}}
+        <aside class="toc-sidebar">
+           <div class="toc-container">
+             <div class="toc-title">On this page</div>
+             <nav class="toc-nav">
+               {{#each page.headers}}
+                 {{#if (gt this.level 1)}}
+                 <a href="#{{this.slug}}" class="toc-link level-{{this.level}}">{{this.title}}</a>
+                 {{/if}}
+               {{/each}}
+             </nav>
+           </div>
+        </aside>
+        {{/if}}
+      </div>
+      {{/if}}
+    {{/if}}
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">{{site.title}}</div>
+        <div class="footer-meta">{{site.themeConfig.footer.copyright}}</div>
+      </div>
+    </footer>
+
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">Download</h3>
+          <button class="modal-close" data-action="click:closeDownloadModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="download-grid">
+            {{#each page.frontmatter.download}}
+              <div class="platform-card">
+                <div class="platform-icon">{{{this.icon}}}</div>
+                <div class="platform-name">{{this.name}}</div>
+                <div class="platform-actions">
+                  {{#each this.variants}}
+                    <a href="{{this.url}}" class="btn btn-sm">{{this.label}}</a>
+                  {{/each}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="{{page.relativeRoot}}assets/client.js"></script>
+</body>
+</html>

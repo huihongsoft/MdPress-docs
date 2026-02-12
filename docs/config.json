@@ -3,5 +3,19 @@
   "description": "MdPress编写、构建的静态站点、",
   "keywords": "MdPress, 站点生成, Markdown站点生成, 静态站点生成",
   "url": "127.0.0.1",
-  "lastUpdated": "2026-01-30T10:18:50.919Z"
+  "lastUpdated": "2026-02-09T06:08:53.347Z",
+  "theme": "default",
+  "themeConfig": {
+    "footer": {
+      "copyright": "Copyright © 2026 MdPress. All rights reserved."
+    }
+  },
+  "routing": {
+    "mode": "slug",
+    "directoryAliases": {
+      "汉字": "hanzi",
+      "开发文档": "development",
+      "常见问题": "faq"
+    }
+  }
 }

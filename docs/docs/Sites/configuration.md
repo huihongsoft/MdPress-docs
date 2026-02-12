@@ -1,0 +1,101 @@
+---
+title: 站点配置详解
+---
+
+# 站点配置详解
+
+`config.json` 是控制 MdPress 站点行为的核心文件。
+
+## 基础配置
+
+```json
+{
+  "title": "My Doc Site",
+  "description": "Built with MdPress",
+  "theme": "default",
+  "lang": "zh-CN"
+}
+```
+
+- **title**: 站点标题，显示在浏览器标签页和导航栏左侧。
+- **description**: 站点描述，用于 SEO meta 标签。
+- **theme**: 使用的主题名称 (如 `default`, `basic`, `official`)。
+- **lang**: 站点语言代码 (如 `zh-CN`, `en-US`)。
+
+## 导航配置
+
+```json
+{
+  "nav": [
+    { "text": "指南", "link": "/guide/" },
+    { "text": "API", "link": "/api/" }
+  ],
+  "sidebar": {
+    "/guide/": [
+      {
+        "text": "基础",
+        "children": ["/guide/intro", "/guide/install"]
+      }
+    ]
+  }
+}
+```
+
+## 发布配置 (Publish)
+
+用于控制“一键发布”功能的行为。
+
+```json
+{
+  "publish": {
+    "github": {
+      "repo": "username/repo-name",
+      "branch": "main",
+      "token": "YOUR_GITHUB_TOKEN",
+      "enableRepo": true,
+      "enablePages": true
+    },
+    "gitee": {
+      "repo": "username/repo-name",
+      "branch": "master",
+      "token": "YOUR_GITEE_TOKEN",
+      "enableRepo": true
+    }
+  }
+}
+```
+
+### 配置项说明
+- **repo**: 目标仓库名称 (推荐格式 `username/repo`)。如果未指定，默认使用当前站点目录名。
+- **branch**: 源码同步的分支 (默认为 `main` 或 `master`)。
+  - **注意**: 不能设置为 `gh-pages`，该分支专用于静态页面部署。
+- **token**: 平台访问令牌 (Personal Access Token)。
+- **enableRepo**: 是否将**源码**同步到仓库 (默认为 `true`)。
+- **enablePages**: (GitHub 专用) 是否将构建后的 `dist` 目录部署到 `gh-pages` 分支并开启 GitHub Pages (默认为 `false`)。
+
+## 步骤组件配置 (Steps)
+
+MdPress 支持在 Frontmatter 中定义步骤式引导内容（通常用于教程首页）。
+
+```yaml
+---
+steps:
+  - id: step1
+    kind: tab
+    title: 选择平台
+    tabs:
+      - id: mac
+        label: macOS
+        description: 适用于 macOS 10.15+
+      - id: win
+        label: Windows
+        description: 适用于 Windows 10+
+  - id: step2
+    kind: list
+    title: 安装步骤
+    items:
+      - title: 下载安装包
+        details: 访问官网下载最新版本
+      - title: 运行安装程序
+---
+```

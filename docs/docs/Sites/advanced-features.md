@@ -1,0 +1,81 @@
+---
+title: 高级功能与组件
+---
+
+# 高级功能与组件
+
+MdPress 不仅仅是一个 Markdown 编辑器，它还引入了一些特定的组件和功能来增强文档的表现力。
+
+## 步骤引导组件 (Steps)
+
+在编写复杂的安装指南或分步教程时，普通的列表可能不够直观。MdPress 提供了专门的“步骤组件”。
+
+### 启用方式
+在 Markdown 文件的 Frontmatter 中定义 `steps` 数组。
+
+### 示例配置
+```yaml
+---
+title: 安装教程
+steps:
+  - id: download
+    kind: tab
+    title: 1. 下载软件
+    tabs:
+      - id: mac
+        label: macOS
+        description: 支持 Intel 和 Apple Silicon
+        linkUrl: https://example.com/mac
+      - id: win
+        label: Windows
+        description: Windows 10/11 64位
+        linkUrl: https://example.com/win
+  - id: install
+    kind: list
+    title: 2. 执行安装
+    items:
+      - title: 双击安装包
+        details: 按照向导提示完成安装
+      - title: 启动应用
+---
+```
+
+配置后，页面顶部会自动渲染一个交互式的步骤导航条。
+
+## 数学公式与图表
+
+### KaTeX 公式
+MdPress 完整支持 LaTeX 数学语法：
+
+$$
+f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2\pi i \xi x} \,d\xi
+$$
+
+### Mermaid 流程图 (计划中)
+目前版本暂未内置 Mermaid 支持，我们计划在未来版本中引入，以支持流程图、时序图和甘特图的绘制。
+
+## 原始 HTML 与脚本
+
+为了最大的灵活性，MdPress 允许在 Markdown 中嵌入原始 HTML。
+
+```html
+<button onclick="alert('Hello!')">点击我</button>
+```
+
+**注意**：出于安全考虑，嵌入的脚本在编辑器预览中可能会受到限制，但在生成的静态站点中会正常执行。
+
+## 自定义容器
+
+使用自定义容器来高亮重要信息：
+
+::: tip 提示
+这是提示内容
+:::
+
+::: warning 警告
+这是警告内容
+:::
+
+::: danger 危险
+这是危险内容
+:::
