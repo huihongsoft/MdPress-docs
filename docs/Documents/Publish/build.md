@@ -27,7 +27,7 @@ title: 构建静态网站
 ```text
 dist/
 ├── assets/
-├── Guide/
+├── guides/
 │   ├── intro.html
 │   └── ...
 ├── index.html

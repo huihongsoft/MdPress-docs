@@ -23,7 +23,7 @@ header:
       href: javascript:void(0)
     secondary:
       label: 查看文档
-      href: javascript:void(0)
+      href: /documents/index.html
 
 # 首屏 Hero 区域
 hero:

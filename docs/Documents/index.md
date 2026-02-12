@@ -28,7 +28,7 @@ Built with Vite for instant server start.
 ## Getting Started
 
 ### Installation
-Check out the [Installation](/guide/getting-started/installation.html) guide to get started.
+Check out the [Installation](/documents/guides/installation.html) guide to get started.
 
 ### Usage
 Learn how to use the CLI.
