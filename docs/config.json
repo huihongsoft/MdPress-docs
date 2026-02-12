@@ -11,12 +11,12 @@
     }
   },
   "routing": {
-    "mode": "native",
+    "mode": "slug",
     "directoryAliases": {
       "汉字": "hanzi",
       "开发文档": "development",
       "常见问题": "faq",
-      "更新日志": ""
+      "更新日志": "logs"
     }
   }
 }
