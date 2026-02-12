@@ -11,7 +11,7 @@
     }
   },
   "routing": {
-    "mode": "native",
+    "mode": "slug",
     "directoryAliases": {
       "汉字": "hanzi",
       "开发文档": "development",
