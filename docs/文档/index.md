@@ -3,32 +3,32 @@ layout:
 title: 概览
 slug: 
 tag: []
-description: Guide Introduction
-keywords: static site, generator, typescript, mdpress
-category: Guide
+description: 指南简介
+keywords: 静态站点, 生成器, typescript, mdpress
+category: 指南
 ---
 
-# Introduction
+# 简介
 
-Welcome to the MdPress guide!
+欢迎阅读 MdPress 指南！
 
-MdPress is a static site generator designed for creating documentation sites with ease.
+MdPress 是一个专为轻松创建文档站点而设计的静态站点生成器。
 
-## Features
+## 特性
 
-### Markdown-centric
-Write your content in Markdown.
+### 以 Markdown 为中心
+使用 Markdown 编写您的内容。
 
-### Vue-powered
-Use Vue components in your Markdown.
+### React 驱动
+在 Markdown 中使用 React 组件。
 
-### Fast
-Built with Vite for instant server start.
+### 极速体验
+基于 Vite 构建，提供即时的服务器启动体验。
 
-## Getting Started
+## 快速开始
 
-### Installation
-Check out the [Installation](/documents/guides/installation.html) guide to get started.
+### 安装
+查看 [安装](/documents/guides/installation.html) 指南以开始使用。
 
-### Usage
-Learn how to use the CLI.
+### 使用
+学习如何使用命令行工具 (CLI)。

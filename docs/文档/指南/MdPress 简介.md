@@ -1,5 +1,10 @@
 ---
+layout: 
 title: MdPress 简介
+slug: introduction
+tag: [指南, 介绍]
+description: MdPress 是一款基于 Electron 的现代化 Markdown 编辑器与静态站点生成器，提供专业级编辑体验和一键建站功能。
+keywords: mdpress, 简介, electron, markdown编辑器, 静态站点生成器
 ---
 
 # MdPress 简介

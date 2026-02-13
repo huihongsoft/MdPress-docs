@@ -1,5 +1,10 @@
 ---
+layout: 
 title: Markdown 基础与进阶
+slug: markdown-basics-and-advanced
+tag: [指南, Markdown]
+description: 全面的 Markdown 语法指南，涵盖基础语法、GFM 表格与任务列表、KaTeX 数学公式及自定义容器。
+keywords: markdown, 语法, gfm, katex, 数学公式, 表格
 ---
 
 # Markdown 基础与进阶
@@ -97,9 +102,3 @@ MdPress 支持类似 VuePress 的自定义提示块，用于醒目的信息展�
 
 ## HTML 支持
 您可以在 Markdown 中直接编写原生 HTML 代码，这在需要复杂布局时非常有用。
-
-```html
-<div style="text-align: center; color: red;">
-  这段文字居中且为红色
-</div>
-```
