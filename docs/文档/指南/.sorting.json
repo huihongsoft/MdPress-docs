@@ -1,1 +1,11 @@
-["steps-intro.md",".sorting.json"]
+[
+  "MdPress 简介.md",
+  "安装与设置.md",
+  "界面概览.md",
+  "快速开始.md",
+  "Markdown 基础与进阶.md",
+  "核心概念.md",
+  "steps-intro.md",
+  ".sorting.json",
+  "创建交互式教程.md"
+]
