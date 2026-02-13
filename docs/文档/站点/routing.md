@@ -1,3 +1,7 @@
+---
+title: 导航与菜单配置
+---
+
 # 路由方案 (Routing Scheme)
 
 MdPress 提供了灵活的路由管理方案，支持 **Native (原生)** 和 **Slug (别名)** 两种模式，以适应不同的 URL 需求。
