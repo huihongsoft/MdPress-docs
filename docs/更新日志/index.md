@@ -5,7 +5,7 @@ description: 记录产品的每一次迭代与进化
 changelog:
   - date: 2026-02-10
     title: 功能扩展
-    description: 多模版支持，编辑区多标签支持，优化已有功能。
+    description: 多模版支持，一键发布至github、gitee支持，编辑区多标签支持，优化已有功能。
     tag: v0.1.5
 
   - date: 2026-01-20
