@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键发布与部署 | MdPress文档</title>
+    
+    <meta name="description" content="介绍 MdPress 的一键发布功能，支持自动同步源码并部署到 GitHub Pages 或 Gitee Pages，包含常见故障排除。">
+    
+    
+    <meta name="keywords" content="mdpress, 一键发布, github pages, gitee pages, 自动化部署">
+    
+    
+    
+    <meta name="tag" content="发布, 自动化">
+    
+    
+    <link rel="stylesheet" href="../../assets/style.css?v=1771060729779">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+    <div class="Layout">
+        <header class="VPNav">
+            <div class="VPNavBar">
+                <div class="container">
+                    <div class="title">
+                        <a href="../../index.html">MdPress文档</a>
+                    </div>
+                    <div class="content">
+                        <nav class="nav-links">
+                            
+                                
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="../../doc/index.html">文档</a>
+                                    </div>
+                                
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="../../changelogs/index.html">更新日志</a>
+                                    </div>
+                                
+                            
+                        </nav>
+                        
+                        <div class="social-links">
+                            
+                                <a class="social-link" href="https://github.com/huihongsoft/MdPress" target="_blank" rel="noopener">
+                                    github
+                                </a>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        
+            <div class="VPContent is-doc">
+                <aside class="VPSidebar">
+                    <nav class="VPSidebarNav">
+                        
+                            <div class="group">
+                                
+                                <div class="group-items">
+                                    
+                                        
+                                            <a class="link " href="../../doc/index.html">
+                                                <p class="link-text">Overview</p>
+                                            </a>
+                                        
+                                    
+                                </div>
+                            </div>
+                        
+                            <div class="group">
+                                
+                                <div class="group-header">
+                                    <div class="group-title">指南</div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                
+                                <div class="group-items">
+                                    
+                                        
+                                            <a class="link " href="../../doc/guide/introduction.html">
+                                                <p class="link-text">MdPress 简介</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/installation-and-setup.html">
+                                                <p class="link-text">安装与设置</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/interface-overview.html">
+                                                <p class="link-text">界面概览</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/quick-start.html">
+                                                <p class="link-text">快速开始</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/markdown-basics-and-advanced.html">
+                                                <p class="link-text">Markdown 基础与进阶</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/core-concepts.html">
+                                                <p class="link-text">核心概念</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/steps-intro.html">
+                                                <p class="link-text">Steps intro</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/guide/creating-interactive-tutorials.html">
+                                                <p class="link-text">创建交互式教程</p>
+                                            </a>
+                                        
+                                    
+                                </div>
+                            </div>
+                        
+                            <div class="group">
+                                
+                                <div class="group-header">
+                                    <div class="group-title">站点</div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                
+                                <div class="group-items">
+                                    
+                                        
+                                            <a class="link " href="../../doc/site/routing-scheme.html">
+                                                <p class="link-text">路由方案</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/site/navigation-and-menu-configuration.html">
+                                                <p class="link-text">导航与菜单配置</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/site/advanced-features-and-components.html">
+                                                <p class="link-text">高级功能与组件</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/site/content-organization-and-management.html">
+                                                <p class="link-text">内容组织与管理</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/site/site-configuration-details.html">
+                                                <p class="link-text">站点配置详解</p>
+                                            </a>
+                                        
+                                    
+                                </div>
+                            </div>
+                        
+                            <div class="group">
+                                
+                                <div class="group-header">
+                                    <div class="group-title">主题</div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                
+                                <div class="group-items">
+                                    
+                                        
+                                            <a class="link " href="../../doc/theme/using-themes.html">
+                                                <p class="link-text">使用主题</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/theme/built-in-themes-details.html">
+                                                <p class="link-text">内置主题详解</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/theme/style-override.html">
+                                                <p class="link-text">样式覆盖</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/theme/long-form-writing-best-practices.html">
+                                                <p class="link-text">长文写作最佳实践</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/theme/theme-customization.html">
+                                                <p class="link-text">主题个性化</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/theme/theme-development-guide.html">
+                                                <p class="link-text">主题开发指南</p>
+                                            </a>
+                                        
+                                    
+                                </div>
+                            </div>
+                        
+                            <div class="group">
+                                
+                                <div class="group-header">
+                                    <div class="group-title">发布</div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                
+                                <div class="group-items">
+                                    
+                                        
+                                            <a class="link " href="../../doc/publish/building-static-sites.html">
+                                                <p class="link-text">构建静态网站</p>
+                                            </a>
+                                        
+                                            <a class="link " href="../../doc/publish/hosting-and-deployment-guide.html">
+                                                <p class="link-text">托管与部署指南</p>
+                                            </a>
+                                        
+                                            <a class="link active" href="../../doc/publish/one-click-publish-and-deploy.html">
+                                                <p class="link-text">一键发布与部署</p>
+                                            </a>
+                                        
+                                    
+                                </div>
+                            </div>
+                        
+                    </nav>
+                </aside>
+                
+                <div class="VPContentDoc">
+                     <main>
+                        <div class="vp-doc">
+                            
+                            
+                            <h1 id="">一键发布与部署</h1>
+                            
+
+                            
+                            <!-- DEBUG: currentPath=/doc/publish/one-click-publish-and-deploy.html, activeSidebarContext=/doc/ -->
+                            <div class="meta-info" style="margin-bottom: 24px; color: var(--vp-c-text-2); font-size: 14px;">
+                                <span style="font-weight: 600; margin-right: 10px;">Tags:</span>
+                                <span class="tags">
+                                    
+                                    <a href="../../tags.html?tag=发布&amp;context=%2Fdoc%2F" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;">发布</a>
+                                    
+                                    <a href="../../tags.html?tag=自动化&amp;context=%2Fdoc%2F" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;">自动化</a>
+                                    
+                                </span>
+                            </div>
+                            
+
+                            
+                            <p>MdPress 提供了极简的发布流程，让您可以直接将本地文档发布到 GitHub Pages 或 Gitee Pages。</p>
+<h2 id="header">快速配置</h2>
+<p>在发布前，请确保您已在 <code>config.json</code> 中配置了目标平台信息。</p>
+<h3 id="github-pages">GitHub Pages 最佳实践</h3>
+<p>推荐开启 <code>enableRepo</code> 和 <code>enablePages</code>，这样 MdPress 会自动处理源码同步和静态页面部署。</p>
+<pre><code class="language-json">"publish": {
+  "github": {
+    "repo": "my-blog",
+    "branch": "main",
+    "token": "ghp_xxxxxxxxxxxx",
+    "enableRepo": true,
+    "enablePages": true
+  }
+}
+</code></pre>
+<p><strong>工作流程：</strong></p>
+<ol>
+<li>MdPress 将您的 Markdown <strong>源码</strong>推送到 <code>main</code> 分支。</li>
+<li>MdPress 在本地构建静态网站。</li>
+<li>MdPress 将构建产物 (<code>dist</code> 目录) 强制推送到 <code>gh-pages</code> 分支。</li>
+<li>GitHub Pages 自动检测到 <code>gh-pages</code> 分支更新，完成上线。</li>
+</ol>
+<h2 id="header-1">常见问题与故障排除</h2>
+<h3 id="1-source-branch-cannot-be-gh-pages">1. 错误提示：Source branch cannot be 'gh-pages'</h3>
+<p><strong>原因</strong>：您尝试将源码分支 (<code>branch</code>) 设置为 <code>gh-pages</code>。
+<strong>解决</strong>：<code>gh-pages</code> 是专门用于存放生成的静态 HTML 文件的分支，<strong>绝对不要</strong>将源码存放在此分支，否则会被构建产物覆盖导致源码丢失。请将 <code>branch</code> 设置为 <code>main</code> 或 <code>master</code>。</p>
+<h3 id="2-token">2. 发布失败：Token 权限不足</h3>
+<p><strong>原因</strong>：使用的 Personal Access Token 没有包含 <code>repo</code> 权限。
+<strong>解决</strong>：</p>
+<ul>
+<li>前往 GitHub Developer Settings。</li>
+<li>重新生成 Token。</li>
+<li>确保勾选 <strong>repo</strong> (Full control of private repositories) 权限组。</li>
+<li>如果是 Gitee，需勾选 <strong>projects</strong> 权限。</li>
+</ul>
+<h3 id="3-github-pages-404">3. GitHub Pages 404</h3>
+<p><strong>原因</strong>：GitHub Pages 设置未生效或部署尚未完成。
+<strong>解决</strong>：</p>
+<ul>
+<li>访问仓库的 <code>Settings -> Pages</code>。</li>
+<li>确保 <strong>Source</strong> 选择的是 <code>Deploy from a branch</code>。</li>
+<li>确保 <strong>Branch</strong> 选择的是 <code>gh-pages</code> / <code>/ (root)</code>。</li>
+<li>等待几分钟，GitHub Actions 构建通常需要时间。</li>
+</ul>
+<h3 id="4-gitee-pages">4. Gitee Pages 不自动更新</h3>
+<p><strong>注意</strong>：Gitee Pages 的免费版不支持自动部署。
+<strong>解决</strong>：每次推送后，您需要手动登录 Gitee 仓库页面，点击“服务 -> Gitee Pages -> 更新”按钮。</p>
+<h2 id="header-2">手动部署</h2>
+<p>如果您不使用一键发布，也可以手动构建并部署。</p>
+<ol>
+<li>点击工具栏的 <strong>Build</strong> 按钮（或运行构建命令）。</li>
+<li>构建产物位于项目根目录的 <code>dist</code> 文件夹。</li>
+<li>将 <code>dist</code> 文件夹的内容上传到任何静态托管服务：
+<ul>
+<li><strong>Nginx</strong>: 配置 <code>root</code> 指向该目录。</li>
+<li><strong>Vercel / Netlify</strong>: 将项目连接到 Git，设置构建命令为空，输出目录为 <code>dist</code>。</li>
+</ul>
+</li>
+</ol>
+                        </div>
+                     </main>
+                     
+                     
+                     <footer class="VPFooter">
+                        
+                        
+                        <p class="copyright">Copyright © 2026 MdPress. All rights reserved.</p>
+                        
+                     </footer>
+                     
+                </div>
+
+                
+                <aside class="VPRightSidebar">
+                    <div class="VPRightSidebar-content">
+                        <div class="outline-title">On this page</div>
+                        <nav class="outline-links">
+                            
+                                
+                                <a class="outline-link level-2" href="#header">快速配置</a>
+                                
+                            
+                                
+                                <a class="outline-link level-3" href="#github-pages">GitHub Pages 最佳实践</a>
+                                
+                            
+                                
+                                <a class="outline-link level-2" href="#header-1">常见问题与故障排除</a>
+                                
+                            
+                                
+                                <a class="outline-link level-3" href="#1-source-branch-cannot-be-gh-pages">1. 错误提示：Source branch cannot be &#39;gh-pages&#39;</a>
+                                
+                            
+                                
+                                <a class="outline-link level-3" href="#2-token">2. 发布失败：Token 权限不足</a>
+                                
+                            
+                                
+                                <a class="outline-link level-3" href="#3-github-pages-404">3. GitHub Pages 404</a>
+                                
+                            
+                                
+                                <a class="outline-link level-3" href="#4-gitee-pages">4. Gitee Pages 不自动更新</a>
+                                
+                            
+                                
+                                <a class="outline-link level-2" href="#header-2">手动部署</a>
+                                
+                            
+                        </nav>
+                    </div>
+                </aside>
+                
+            </div>
+        
+    </div>
+    <script>
+        (function() {
+            // Hamburger Menu
+            var menuToggle = document.querySelector('.menu-toggle');
+            var body = document.body;
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    if (body.classList.contains('nav-open')) {
+                        body.classList.remove('nav-open');
+                    } else {
+                        body.classList.add('nav-open');
+                    }
+                });
+            }
+
+            // Dark Mode Toggle
+            var appearanceToggle = document.querySelector('.VPSwitchAppearance');
+            var sunIcon = document.querySelector('.VPSwitchAppearance .sun');
+            var moonIcon = document.querySelector('.VPSwitchAppearance .moon');
+            
+            function updateIcon(isDark) {
+                if (sunIcon) sunIcon.style.display = isDark ? 'block' : 'none';
+                if (moonIcon) moonIcon.style.display = isDark ? 'none' : 'block';
+            }
+
+            // Init icon
+            updateIcon(document.documentElement.classList.contains('dark'));
+
+            if (appearanceToggle) {
+                appearanceToggle.addEventListener('click', function() {
+                    var isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('mdpress-theme', isDark ? 'dark' : 'light');
+                    updateIcon(isDark);
+                });
+            }
+
+
+            // Scroll Spy & TOC Features
+            (function() {
+                var contentDoc = document.querySelector('.VPContentDoc .vp-doc');
+                if (!contentDoc) return;
+
+                var headers = Array.from(contentDoc.querySelectorAll('h2[id], h3[id]'));
+                var outlineLinks = document.querySelectorAll('.VPRightSidebar .outline-link');
+                var activeId = '';
+                var isClickScrolling = false; // Flag to prevent observer updates during click scroll
+
+                // Throttle Utility
+                function throttle(func, limit) {
+                    var inThrottle;
+                    return function() {
+                        var args = arguments;
+                        var context = this;
+                        if (!inThrottle) {
+                            func.apply(context, args);
+                            inThrottle = true;
+                            setTimeout(function() { inThrottle = false; }, limit);
+                        }
+                    }
+                }
+
+                // Update Active State in Sidebar
+                function updateSidebar(id) {
+                    if (!id || isClickScrolling) return;
+                    if (activeId === id) return;
+                    
+                    activeId = id;
+                    
+                    // Update URL hash without jumping (throttled)
+                    updateHash(id);
+
+                    // Update classes
+                    var activeLink = null;
+                    outlineLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                        var href = link.getAttribute('href');
+                        if (href && (href === '#' + id || decodeURIComponent(href) === '#' + id)) {
+                            link.classList.add('active');
+                            activeLink = link;
+                        }
+                    });
+
+                    // Auto-scroll sidebar
+                    if (activeLink) {
+                        var sidebarContent = document.querySelector('.VPRightSidebar-content');
+                        if (sidebarContent) {
+                            var linkRect = activeLink.getBoundingClientRect();
+                            var sidebarRect = sidebarContent.getBoundingClientRect();
+                            if (linkRect.top < sidebarRect.top + 32) {
+                                sidebarContent.scrollTop += (linkRect.top - sidebarRect.top - 32);
+                            } else if (linkRect.bottom > sidebarRect.bottom - 32) {
+                                sidebarContent.scrollTop += (linkRect.bottom - sidebarRect.bottom + 32);
+                            }
+                        }
+                    }
+                }
+
+                // Throttled Hash Update
+                var updateHash = throttle(function(id) {
+                    if (history.replaceState) {
+                        history.replaceState(null, null, '#' + id);
+                    }
+                }, 300);
+
+                // IntersectionObserver for Scroll Spy
+                if (window.IntersectionObserver && headers.length > 0) {
+                    var observerOptions = {
+                        root: null,
+                        rootMargin: '-100px 0px -60% 0px', // Trigger when header is near top
+                        threshold: 0
+                    };
+
+                    var observer = new IntersectionObserver(function(entries) {
+                        // Find the entry that is intersecting and closest to top
+                        // Or simply: if an entry intersects, it's a candidate.
+                        // We need to handle direction.
+                        // A simple heuristic: The last intersecting entry in the list (bottom-most in DOM) 
+                        // that is currently intersecting is usually the one "in view" if we look at the top area.
+                        // But with -60% bottom margin, we only see the top part of screen.
+                        
+                        // Let's filter visible entries
+                        var visibleEntries = entries.filter(function(e) { return e.isIntersecting; });
+                        
+                        if (visibleEntries.length > 0) {
+                            // If multiple are visible in the top strip, usually the first one (top-most) is the one we want?
+                            // No, if we have [H2 ... H3], and both are in strip, H2 is above H3.
+                            // If we scroll down, H2 leaves, H3 remains.
+                            // So we pick the one with smallest boundingClientRect.top that is > 0?
+                            // Let's just pick the first intersecting entry from the DOM order.
+                            
+                            // We need to map entries back to DOM order
+                            var visibleIds = visibleEntries.map(function(e) { return e.target.id; });
+                            
+                            // Find the first header in DOM that is in visibleIds
+                            var firstVisible = headers.find(function(h) { return visibleIds.includes(h.id); });
+                            if (firstVisible) {
+                                updateSidebar(firstVisible.id);
+                            }
+                        } else {
+                            // If no headers are in the strip (e.g. we are inside a long section),
+                            // we should find the last header that is ABOVE the viewport.
+                            // IntersectionObserver doesn't give us "above" vs "below" easily without check.
+                            // Fallback to checking positions for all headers if IO comes up empty?
+                            // Or simpler: Just rely on the "enter" events.
+                            // But "enter" events miss the "scrolled past" case on load.
+                            
+                            // Let's use a hybrid: On IO callback, if nothing intersecting, check positions.
+                            checkActivePosition();
+                        }
+                    }, observerOptions);
+
+                    headers.forEach(function(header) { observer.observe(header); });
+                    
+                    // Initial check
+                    checkActivePosition();
+                } else {
+                    // Fallback for no IO
+                    window.addEventListener('scroll', throttle(checkActivePosition, 100));
+                }
+
+                function checkActivePosition() {
+                    if (isClickScrolling) return;
+                    
+                    var topOffset = 100;
+                    var currentActive = null;
+                    
+                    // Check if at bottom
+                    if ((window.innerHeight + Math.ceil(window.scrollY)) >= document.body.offsetHeight - 10) {
+                        if (headers.length > 0) currentActive = headers[headers.length - 1];
+                    } else {
+                        // Find last header above topOffset
+                        for (var i = 0; i < headers.length; i++) {
+                            var rect = headers[i].getBoundingClientRect();
+                            if (rect.top <= topOffset) {
+                                currentActive = headers[i];
+                            } else {
+                                break; // Headers are ordered, so we can stop
+                            }
+                        }
+                    }
+
+                    if (currentActive) {
+                        updateSidebar(currentActive.id);
+                    } else if (headers.length > 0) {
+                        // If no header is above (at very top), highlight first
+                         updateSidebar(headers[0].id);
+                    }
+                }
+
+                // Smooth Scroll on Click
+                document.querySelectorAll('.VPRightSidebar .outline-link').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var href = this.getAttribute('href');
+                        if (!href || !href.startsWith('#')) return;
+                        var id = href.substring(1);
+                        var target = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+                        
+                        if (target) {
+                            isClickScrolling = true;
+                            // Remove active from others, add to this
+                            outlineLinks.forEach(function(l) { l.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeId = id;
+                            updateHash(id);
+
+                            var offset = 80; // Nav height + padding
+                            var top = target.getBoundingClientRect().top + window.scrollY - offset;
+                            
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+
+                            // Re-enable observer after scroll (approximate duration)
+                            setTimeout(function() { isClickScrolling = false; }, 1000);
+                        }
+                    });
+                });
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', function(e) {
+                    // Only if sidebar exists
+                    if (outlineLinks.length === 0) return;
+                    
+                    // Up/Down arrows
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        // Find current active index
+                        var currentIndex = -1;
+                        for (var i = 0; i < outlineLinks.length; i++) {
+                            if (outlineLinks[i].classList.contains('active')) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (currentIndex === -1 && outlineLinks.length > 0) currentIndex = 0;
+
+                        var nextIndex = currentIndex;
+                        if (e.key === 'ArrowDown') {
+                            nextIndex = Math.min(currentIndex + 1, outlineLinks.length - 1);
+                        } else if (e.key === 'ArrowUp') {
+                            nextIndex = Math.max(currentIndex - 1, 0);
+                        }
+
+                        if (nextIndex !== currentIndex) {
+                            e.preventDefault();
+                            outlineLinks[nextIndex].click(); // Trigger the click handler
+                        }
+                    }
+                });
+
+            })();
+
+            // Layout Fixer
+            function fixLayout() {
+                // Force Sidebar Top Position
+                var sidebar = document.querySelector('.VPSidebar');
+                if (sidebar) {
+                     sidebar.style.setProperty('top', '64px', 'important');
+                }
+                
+                // Force Right Sidebar Top Position
+                var rightSidebar = document.querySelector('.VPRightSidebar');
+                if (rightSidebar) {
+                     rightSidebar.style.setProperty('top', '64px', 'important');
+                }
+            }
+            window.addEventListener('resize', fixLayout);
+            window.addEventListener('load', function() {
+                fixLayout();
+                setTimeout(fixLayout, 100);
+            });
+            fixLayout();
+
+            // Move Category/Tag to below Title
+            function moveMeta() {
+                var doc = document.querySelector('.vp-doc');
+                if (doc) {
+                    var title = doc.querySelector('h1');
+                    var meta = doc.querySelector('.meta-info');
+                    if (title && meta) {
+                        title.after(meta);
+                        meta.style.marginBottom = '24px';
+                        meta.style.marginTop = '16px';
+                        meta.style.display = 'block'; // Ensure visibility
+                    } else if (meta && !title) {
+                        // If no title found (rare), maybe try to insert at top or keep as is?
+                        // For now, let's just ensure it's visible.
+                        meta.style.marginBottom = '24px';
+                    }
+                }
+            }
+            
+            // Execute immediately and on load/DOMReady
+            moveMeta();
+            window.addEventListener('DOMContentLoaded', moveMeta);
+            window.addEventListener('load', moveMeta);
+
+            // Sidebar Toggle
+            document.querySelectorAll('.VPSidebar .group-header').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    var group = header.parentElement;
+                    group.classList.toggle('collapsed');
+                });
+            });
+        })();
+    </script>
+    <script>
+        function switchStepTab(button, stepId, tabIndex) {
+            const tabsContainer = button.closest('.mdp-step-tabs');
+            const buttons = tabsContainer.querySelectorAll('.mdp-step-tab');
+            buttons.forEach(btn => btn.classList.remove('mdp-step-tab-active'));
+            button.classList.add('mdp-step-tab-active');
+            
+            const contents = tabsContainer.querySelectorAll('.mdp-step-tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            
+            const targetContent = tabsContainer.querySelector(`#${stepId}-tab-${tabIndex}`);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MdPress Official | MdPress文档</title>
+    
+    <meta name="description" content="MdPress编写、构建的静态站点、">
+    
+    
+    <meta name="keywords" content="MdPress, 站点生成, Markdown站点生成, 静态站点生成">
+    
+    
+    <meta name="layout" content="home">
+    
+    
+    
+    <link rel="stylesheet" href="./assets/style.css?v=1771060729729">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+    <div class="Layout">
+        <header class="VPNav">
+            <div class="VPNavBar">
+                <div class="container">
+                    <div class="title">
+                        <a href="./index.html">MdPress文档</a>
+                    </div>
+                    <div class="content">
+                        <nav class="nav-links">
+                            
+                                
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="./doc/index.html">文档</a>
+                                    </div>
+                                
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="./changelogs/index.html">更新日志</a>
+                                    </div>
+                                
+                            
+                        </nav>
+                        
+                        <div class="social-links">
+                            
+                                <a class="social-link" href="https://github.com/huihongsoft/MdPress" target="_blank" rel="noopener">
+                                    github
+                                </a>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        
+            <main class="VPContent is-home">
+                <div class="VPHome">
+                    
+                    <section class="VPHero">
+                        <div class="container">
+                            <div class="main">
+                                <h1 class="name"><span class="clip">从 Markdown 到文档站点，一切尽在一个窗口</span></h1>
+                                <p class="text">MdPress 将编辑器、预览、站点生成与工作区管理整合在一起，帮助团队以工程化方式构建文档。</p>
+                                <p class="tagline">专为文档工程打造的本地 IDE</p>
+                                
+                                
+                                <div class="actions">
+                                    
+                                    <div class="action">
+                                        <a class="action-btn primary" href="https://github.com">
+                                            开始使用 MdPress
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="action">
+                                        <a class="action-btn secondary" href="#features">
+                                            了解核心特性
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                                
+                                <div class="meta">跨平台 · 本地优先 · 与 Git 流程深度兼容</div>
+                                
+                            </div>
+                            
+                            
+                            <div class="preview">
+                                <div class="preview-wrapper">
+                                    <div class="preview-header">
+                                        实时预览你的 Markdown 文档
+                                    </div>
+                                    <div class="preview-container">
+                                        <div class="preview-editor">
+                                            <div class="preview-filename">docs/guide/index.md</div>
+                                            <pre class="preview-code"># Hello MdPress
+
+- 实时预览
+- 多语言站点
+- 插件扩展
+- 多站点管理
+- 一键编译
+- 站点 SEO 支持
+</pre>
+                                        </div>
+                                        <div class="preview-render">
+                                            <div class="preview-render-title">Hello MdPress</div>
+                                            <ul>
+                                                
+                                                <li>实时预览</li>
+                                                
+                                                <li>多语言站点</li>
+                                                
+                                                <li>插件扩展</li>
+                                                
+                                                <li>多站点管理</li>
+                                                
+                                                <li>一键编译</li>
+                                                
+                                                <li>站点 SEO 支持</li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </section>
+                    
+
+                    
+                    
+                    <section class="VPFeatures">
+                        <div class="container">
+                            <div class="items">
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">edit</div>
+                                        
+                                        <h2 class="title">专业级编辑体验</h2>
+                                        <p class="details">内置 Monaco 编辑器，提供智能补全、快捷键与命令面板，带来流畅的专业级编写体验。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">edit</div>
+                                        
+                                        <h2 class="title">实时 Markdown 预览</h2>
+                                        <p class="details">所见即所得的 Markdown 渲染，支持数学公式、表格、代码高亮等，让内容和排版同步可见。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">workflow</div>
+                                        
+                                        <h2 class="title">站点一键构建</h2>
+                                        <p class="details">从本地 Markdown 仓库到静态文档站点，一键生成和预览，适合文档、博客与知识库场景。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">workflow</div>
+                                        
+                                        <h2 class="title">多语言与多项目工作区</h2>
+                                        <p class="details">支持多语言界面与多站点工作区管理，在同一窗口中切换不同文档项目与站点。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">extend</div>
+                                        
+                                        <h2 class="title">插件与扩展体系</h2>
+                                        <p class="details">围绕 Markdown 与文档工程设计的插件机制，支持功能扩展与自定义工作流。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        
+                                        <div class="feature-category">extend</div>
+                                        
+                                        <h2 class="title">可集成到现有流程</h2>
+                                        <p class="details">基于静态文件与 Git 工作流设计，易于接入现有 CI/CD 与部署体系。</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                    
+
+                    
+
+                    
+                    <section class="HomeSection HomeWorkflow" id="workflow">
+                        <div class="container">
+                            <div class="workflow-grid">
+                                <div class="workflow-content">
+                                    <h2 class="section-title">贴合团队的文档工程工作流</h2>
+                                    <p class="section-subtitle">从本地编辑到站点发布，每一步都围绕开发者习惯与 CI/CD 能力设计，帮助你把文档当作代码管理。</p>
+                                    <ol class="workflow-steps">
+                                        
+                                        <li class="workflow-step">在本地通过 Monaco 编辑器编辑 Markdown 文档，使用熟悉的快捷键与命令面板。</li>
+                                        
+                                        <li class="workflow-step">通过实时预览确认渲染效果，包含数学公式、图表与代码高亮。</li>
+                                        
+                                        <li class="workflow-step">使用工作区管理不同站点，按项目组织文档目录结构。</li>
+                                        
+                                        <li class="workflow-step">将内容提交到 Git 仓库，由 CI/CD 自动构建并部署静态站点。</li>
+                                        
+                                    </ol>
+                                </div>
+                                
+                                <div class="workflow-panel">
+                                    <div class="workflow-panel-header">典型使用场景</div>
+                                    <ul class="workflow-panel-list">
+                                        
+                                        <li>技术文档与 API 参考站点</li>
+                                        
+                                        <li>多语言产品文档与帮助中心</li>
+                                        
+                                        <li>团队知识库与内部 Wiki</li>
+                                        
+                                        <li>个人博客与长文写作</li>
+                                        
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                    
+
+                    
+                    
+                    
+                    <section class="HomeSection HomeUseCases" id="usecases">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">为什么选择 MdPress</h2>
+                                
+                                <p class="section-subtitle">如果你正在为团队寻找一款既像编辑器又像站点构建器的工具，MdPress 将是合适的选择。</p>
+                                
+                            </div>
+                            <div class="home-grid">
+                                
+                                <div class="home-card">
+                                    <div class="home-card-content">
+                                        <h3 class="home-card-title">面向工程团队</h3>
+                                        <p class="home-card-details">遵循开发者习惯的界面与交互方式，让写文档像写代码一样自然，降低团队采纳成本。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="home-card">
+                                    <div class="home-card-content">
+                                        <h3 class="home-card-title">专注文档而非通用 IDE</h3>
+                                        <p class="home-card-details">不是通用代码编辑器，而是围绕文档结构化、链接关系与导航体验做了深度优化。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="home-card">
+                                    <div class="home-card-content">
+                                        <h3 class="home-card-title">可视化站点结果</h3>
+                                        <p class="home-card-details">在本地即可感知最终站点的布局与导航结构，减少上线后返工调整的成本。</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                    
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                    
+                    <div id="download-modal" class="modal-overlay" style="display: none;">
+                        <div class="modal-container">
+                            <div class="modal-header">
+                                <h3 class="modal-title">下载 MdPress</h3>
+                                <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="download-grid">
+                                    
+                                    <div class="download-card">
+                                        <div class="download-icon"><svg viewBox="0 0 24 24" fill="currentColor" height="24" width="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.21-1.96 1.07-3.11-1.05.05-2.31.74-3.03 1.58-.67.78-1.25 2.05-1.09 3.12 1.17.09 2.36-.73 3.05-1.59"/></svg></div>
+                                        <div class="download-name">macOS</div>
+                                        <div class="download-variants">
+                                            
+                                            <a class="download-link" href="#" data-key="macos-intel">
+                                                Intel Chip (.dmg)
+                                            </a>
+                                            
+                                            <a class="download-link" href="#" data-key="macos-arm64">
+                                                Apple Silicon (.dmg)
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="download-card">
+                                        <div class="download-icon"><svg viewBox="0 0 24 24" fill="currentColor" height="24" width="24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg></div>
+                                        <div class="download-name">Windows</div>
+                                        <div class="download-variants">
+                                            
+                                            <a class="download-link" href="#" data-key="windows-x64">
+                                                x64 Installer (.exe)
+                                            </a>
+                                            
+                                            <a class="download-link" href="#" data-key="windows-arm64">
+                                                ARM64 Installer (.exe)
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="download-card">
+                                        <div class="download-icon"><svg viewBox="0 0 24 24" fill="currentColor" height="24" width="24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.5 5.5c.828 0 1.5.672 1.5 1.5 0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5zm-9 0c.828 0 1.5.672 1.5 1.5 0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5zm6.303 15.023c-1.378-.669-2.325-2.028-2.303-3.523.023-1.488 1.076-2.855 2.455-3.484.288-.132.618-.086.853.118.236.204.331.528.246.832-.086.305-.333.541-.634.612-.663.156-1.127.753-1.139 1.436-.011.683.435 1.298 1.092 1.487.315.091.543.354.595.678.053.324-.078.647-.336.832-.258.185-.597.202-.871.077-.196-.089-.379-.208-.552-.365zm-6.606-1.666c-.663-.156-1.127-.753-1.139-1.436-.011-.683.435-1.298 1.092-1.487.315-.091.543-.354.595-.678.053-.324-.078-.647-.336-.832-.258-.185-.597-.202-.871-.077-1.379.629-2.432 1.996-2.455 3.484-.022 1.495.925 2.854 2.303 3.523.173.157.356.276.552.365.274.125.613.108.871-.077.258-.185.389-.508.336-.832-.052-.324-.28-.587-.595-.678-.299-.086-.547-.323-.633-.613-.085-.304.01-.628.246-.832.235-.204.565-.25.853-.118zm10.303-7.857c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zm-13.5 0c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg></div>
+                                        <div class="download-name">Linux</div>
+                                        <div class="download-variants">
+                                            
+                                            <a class="download-link" href="#" data-key="linux-deb-amd64">
+                                                amd64 (.deb)
+                                            </a>
+                                            
+                                            <a class="download-link" href="#" data-key="linux-deb-arm64">
+                                                ARM64 (.deb)
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function openDownloadModal(e) {
+                            if (e) e.preventDefault();
+                            const modal = document.getElementById('download-modal');
+                            if (modal) {
+                                modal.style.display = 'flex';
+                                document.body.style.overflow = 'hidden';
+                            }
+                        }
+                        function closeDownloadModal() {
+                            const modal = document.getElementById('download-modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                                document.body.style.overflow = '';
+                            }
+                        }
+                        // Close on click outside
+                        document.addEventListener('click', function(e) {
+                            const modal = document.getElementById('download-modal');
+                            if (modal && e.target === modal) {
+                                closeDownloadModal();
+                            }
+                        });
+                        // Attach to download buttons
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const downloadBtns = document.querySelectorAll('a[href="#download"]');
+                            downloadBtns.forEach(btn => {
+                                btn.addEventListener('click', openDownloadModal);
+                            });
+                        });
+                    </script>
+                    
+                    
+
+                    <div class="vp-doc container">
+                        
+                        
+                    </div>
+                    
+                    
+                    
+                    <footer class="VPFooter">
+                        <div class="container">
+                            
+                            <p class="message">MdPress IDE</p>
+                            
+                            
+                            <p class="copyright">Copyright © 2024 MdPress Team. All rights reserved.</p>
+                            
+                        </div>
+                    </footer>
+                    
+                </div>
+            </main>
+        
+    </div>
+    <script>
+        (function() {
+            // Hamburger Menu
+            var menuToggle = document.querySelector('.menu-toggle');
+            var body = document.body;
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    if (body.classList.contains('nav-open')) {
+                        body.classList.remove('nav-open');
+                    } else {
+                        body.classList.add('nav-open');
+                    }
+                });
+            }
+
+            // Dark Mode Toggle
+            var appearanceToggle = document.querySelector('.VPSwitchAppearance');
+            var sunIcon = document.querySelector('.VPSwitchAppearance .sun');
+            var moonIcon = document.querySelector('.VPSwitchAppearance .moon');
+            
+            function updateIcon(isDark) {
+                if (sunIcon) sunIcon.style.display = isDark ? 'block' : 'none';
+                if (moonIcon) moonIcon.style.display = isDark ? 'none' : 'block';
+            }
+
+            // Init icon
+            updateIcon(document.documentElement.classList.contains('dark'));
+
+            if (appearanceToggle) {
+                appearanceToggle.addEventListener('click', function() {
+                    var isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('mdpress-theme', isDark ? 'dark' : 'light');
+                    updateIcon(isDark);
+                });
+            }
+
+
+            // Scroll Spy & TOC Features
+            (function() {
+                var contentDoc = document.querySelector('.VPContentDoc .vp-doc');
+                if (!contentDoc) return;
+
+                var headers = Array.from(contentDoc.querySelectorAll('h2[id], h3[id]'));
+                var outlineLinks = document.querySelectorAll('.VPRightSidebar .outline-link');
+                var activeId = '';
+                var isClickScrolling = false; // Flag to prevent observer updates during click scroll
+
+                // Throttle Utility
+                function throttle(func, limit) {
+                    var inThrottle;
+                    return function() {
+                        var args = arguments;
+                        var context = this;
+                        if (!inThrottle) {
+                            func.apply(context, args);
+                            inThrottle = true;
+                            setTimeout(function() { inThrottle = false; }, limit);
+                        }
+                    }
+                }
+
+                // Update Active State in Sidebar
+                function updateSidebar(id) {
+                    if (!id || isClickScrolling) return;
+                    if (activeId === id) return;
+                    
+                    activeId = id;
+                    
+                    // Update URL hash without jumping (throttled)
+                    updateHash(id);
+
+                    // Update classes
+                    var activeLink = null;
+                    outlineLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                        var href = link.getAttribute('href');
+                        if (href && (href === '#' + id || decodeURIComponent(href) === '#' + id)) {
+                            link.classList.add('active');
+                            activeLink = link;
+                        }
+                    });
+
+                    // Auto-scroll sidebar
+                    if (activeLink) {
+                        var sidebarContent = document.querySelector('.VPRightSidebar-content');
+                        if (sidebarContent) {
+                            var linkRect = activeLink.getBoundingClientRect();
+                            var sidebarRect = sidebarContent.getBoundingClientRect();
+                            if (linkRect.top < sidebarRect.top + 32) {
+                                sidebarContent.scrollTop += (linkRect.top - sidebarRect.top - 32);
+                            } else if (linkRect.bottom > sidebarRect.bottom - 32) {
+                                sidebarContent.scrollTop += (linkRect.bottom - sidebarRect.bottom + 32);
+                            }
+                        }
+                    }
+                }
+
+                // Throttled Hash Update
+                var updateHash = throttle(function(id) {
+                    if (history.replaceState) {
+                        history.replaceState(null, null, '#' + id);
+                    }
+                }, 300);
+
+                // IntersectionObserver for Scroll Spy
+                if (window.IntersectionObserver && headers.length > 0) {
+                    var observerOptions = {
+                        root: null,
+                        rootMargin: '-100px 0px -60% 0px', // Trigger when header is near top
+                        threshold: 0
+                    };
+
+                    var observer = new IntersectionObserver(function(entries) {
+                        // Find the entry that is intersecting and closest to top
+                        // Or simply: if an entry intersects, it's a candidate.
+                        // We need to handle direction.
+                        // A simple heuristic: The last intersecting entry in the list (bottom-most in DOM) 
+                        // that is currently intersecting is usually the one "in view" if we look at the top area.
+                        // But with -60% bottom margin, we only see the top part of screen.
+                        
+                        // Let's filter visible entries
+                        var visibleEntries = entries.filter(function(e) { return e.isIntersecting; });
+                        
+                        if (visibleEntries.length > 0) {
+                            // If multiple are visible in the top strip, usually the first one (top-most) is the one we want?
+                            // No, if we have [H2 ... H3], and both are in strip, H2 is above H3.
+                            // If we scroll down, H2 leaves, H3 remains.
+                            // So we pick the one with smallest boundingClientRect.top that is > 0?
+                            // Let's just pick the first intersecting entry from the DOM order.
+                            
+                            // We need to map entries back to DOM order
+                            var visibleIds = visibleEntries.map(function(e) { return e.target.id; });
+                            
+                            // Find the first header in DOM that is in visibleIds
+                            var firstVisible = headers.find(function(h) { return visibleIds.includes(h.id); });
+                            if (firstVisible) {
+                                updateSidebar(firstVisible.id);
+                            }
+                        } else {
+                            // If no headers are in the strip (e.g. we are inside a long section),
+                            // we should find the last header that is ABOVE the viewport.
+                            // IntersectionObserver doesn't give us "above" vs "below" easily without check.
+                            // Fallback to checking positions for all headers if IO comes up empty?
+                            // Or simpler: Just rely on the "enter" events.
+                            // But "enter" events miss the "scrolled past" case on load.
+                            
+                            // Let's use a hybrid: On IO callback, if nothing intersecting, check positions.
+                            checkActivePosition();
+                        }
+                    }, observerOptions);
+
+                    headers.forEach(function(header) { observer.observe(header); });
+                    
+                    // Initial check
+                    checkActivePosition();
+                } else {
+                    // Fallback for no IO
+                    window.addEventListener('scroll', throttle(checkActivePosition, 100));
+                }
+
+                function checkActivePosition() {
+                    if (isClickScrolling) return;
+                    
+                    var topOffset = 100;
+                    var currentActive = null;
+                    
+                    // Check if at bottom
+                    if ((window.innerHeight + Math.ceil(window.scrollY)) >= document.body.offsetHeight - 10) {
+                        if (headers.length > 0) currentActive = headers[headers.length - 1];
+                    } else {
+                        // Find last header above topOffset
+                        for (var i = 0; i < headers.length; i++) {
+                            var rect = headers[i].getBoundingClientRect();
+                            if (rect.top <= topOffset) {
+                                currentActive = headers[i];
+                            } else {
+                                break; // Headers are ordered, so we can stop
+                            }
+                        }
+                    }
+
+                    if (currentActive) {
+                        updateSidebar(currentActive.id);
+                    } else if (headers.length > 0) {
+                        // If no header is above (at very top), highlight first
+                         updateSidebar(headers[0].id);
+                    }
+                }
+
+                // Smooth Scroll on Click
+                document.querySelectorAll('.VPRightSidebar .outline-link').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var href = this.getAttribute('href');
+                        if (!href || !href.startsWith('#')) return;
+                        var id = href.substring(1);
+                        var target = document.getElementById(id) || document.getElementById(decodeURIComponent(id));
+                        
+                        if (target) {
+                            isClickScrolling = true;
+                            // Remove active from others, add to this
+                            outlineLinks.forEach(function(l) { l.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeId = id;
+                            updateHash(id);
+
+                            var offset = 80; // Nav height + padding
+                            var top = target.getBoundingClientRect().top + window.scrollY - offset;
+                            
+                            window.scrollTo({
+                                top: top,
+                                behavior: 'smooth'
+                            });
+
+                            // Re-enable observer after scroll (approximate duration)
+                            setTimeout(function() { isClickScrolling = false; }, 1000);
+                        }
+                    });
+                });
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', function(e) {
+                    // Only if sidebar exists
+                    if (outlineLinks.length === 0) return;
+                    
+                    // Up/Down arrows
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        // Find current active index
+                        var currentIndex = -1;
+                        for (var i = 0; i < outlineLinks.length; i++) {
+                            if (outlineLinks[i].classList.contains('active')) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (currentIndex === -1 && outlineLinks.length > 0) currentIndex = 0;
+
+                        var nextIndex = currentIndex;
+                        if (e.key === 'ArrowDown') {
+                            nextIndex = Math.min(currentIndex + 1, outlineLinks.length - 1);
+                        } else if (e.key === 'ArrowUp') {
+                            nextIndex = Math.max(currentIndex - 1, 0);
+                        }
+
+                        if (nextIndex !== currentIndex) {
+                            e.preventDefault();
+                            outlineLinks[nextIndex].click(); // Trigger the click handler
+                        }
+                    }
+                });
+
+            })();
+
+            // Layout Fixer
+            function fixLayout() {
+                // Force Sidebar Top Position
+                var sidebar = document.querySelector('.VPSidebar');
+                if (sidebar) {
+                     sidebar.style.setProperty('top', '64px', 'important');
+                }
+                
+                // Force Right Sidebar Top Position
+                var rightSidebar = document.querySelector('.VPRightSidebar');
+                if (rightSidebar) {
+                     rightSidebar.style.setProperty('top', '64px', 'important');
+                }
+            }
+            window.addEventListener('resize', fixLayout);
+            window.addEventListener('load', function() {
+                fixLayout();
+                setTimeout(fixLayout, 100);
+            });
+            fixLayout();
+
+            // Move Category/Tag to below Title
+            function moveMeta() {
+                var doc = document.querySelector('.vp-doc');
+                if (doc) {
+                    var title = doc.querySelector('h1');
+                    var meta = doc.querySelector('.meta-info');
+                    if (title && meta) {
+                        title.after(meta);
+                        meta.style.marginBottom = '24px';
+                        meta.style.marginTop = '16px';
+                        meta.style.display = 'block'; // Ensure visibility
+                    } else if (meta && !title) {
+                        // If no title found (rare), maybe try to insert at top or keep as is?
+                        // For now, let's just ensure it's visible.
+                        meta.style.marginBottom = '24px';
+                    }
+                }
+            }
+            
+            // Execute immediately and on load/DOMReady
+            moveMeta();
+            window.addEventListener('DOMContentLoaded', moveMeta);
+            window.addEventListener('load', moveMeta);
+
+            // Sidebar Toggle
+            document.querySelectorAll('.VPSidebar .group-header').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    var group = header.parentElement;
+                    group.classList.toggle('collapsed');
+                });
+            });
+        })();
+    </script>
+    <script>
+        function switchStepTab(button, stepId, tabIndex) {
+            const tabsContainer = button.closest('.mdp-step-tabs');
+            const buttons = tabsContainer.querySelectorAll('.mdp-step-tab');
+            buttons.forEach(btn => btn.classList.remove('mdp-step-tab-active'));
+            button.classList.add('mdp-step-tab-active');
+            
+            const contents = tabsContainer.querySelectorAll('.mdp-step-tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            
+            const targetContent = tabsContainer.querySelector(`#${stepId}-tab-${tabIndex}`);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
