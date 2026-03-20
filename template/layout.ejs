@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <%
+      function toRelative(link) {
+        if (!link) return '#';
+        if (link.startsWith('http') || link.startsWith('https') || link.startsWith('//')) return link;
+        if (link.startsWith('#')) return link;
+        
+        let cleanLink = link;
+        if (link.startsWith('/')) {
+            cleanLink = link.substring(1);
+        }
+        
+        // Prepend relativeRoot
+        return (page.relativeRoot || './') + cleanLink;
+      }
+    %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= page.title ? page.title + ' | ' : '' %><%= site.title %></title>
+    <% if (page.frontmatter.layout === 'home' && site.description) { %>
+    <meta name="description" content="<%= site.description %>">
+    <% } else { %>
+    <meta name="description" content="<%= page.description || site.description || '' %>">
+    <% } %>
+    <% if (page.frontmatter.layout === 'home' && site.keywords) { %>
+    <meta name="keywords" content="<%= site.keywords %>">
+    <% } else if (page.frontmatter.keywords) { %>
+    <meta name="keywords" content="<%= page.frontmatter.keywords %>">
+    <% } %>
+    <% if (page.frontmatter.layout) { %>
+    <meta name="layout" content="<%= page.frontmatter.layout %>">
+    <% } %>
+    <% if (page.frontmatter.tag && Array.isArray(page.frontmatter.tag)) { %>
+    <meta name="tag" content="<%= page.frontmatter.tag.join(', ') %>">
+    <% } %>
+    <% if (page.frontmatter.seo) { %>
+    <!-- SEO Custom Tags -->
+    <%- page.frontmatter.seo %>
+    <% } %>
+    <link rel="stylesheet" href="<%= page.relativeRoot %>assets/style.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+    <div class="Layout">
+        <header class="VPNav">
+            <div class="VPNavBar">
+                <div class="container">
+                    <div class="title">
+                        <a href="<%= toRelative('/index.html') %>"><%= site.title %></a>
+                    </div>
+                    <div class="content">
+                        <nav class="nav-links">
+                            <% if (site.themeConfig.nav) { %>
+                                <% site.themeConfig.nav.forEach(function(item) { %>
+                                    <div class="nav-item">
+                                        <a class="nav-link" href="<%= toRelative(item.link) %>"><%= item.text %></a>
+                                    </div>
+                                <% }); %>
+                            <% } %>
+                        </nav>
+                        <% if (site.themeConfig.socialLinks) { %>
+                        <div class="social-links">
+                            <% site.themeConfig.socialLinks.forEach(function(item) { %>
+                                <a class="social-link" href="<%= toRelative(item.link) %>" target="_blank" rel="noopener">
+                                    <%= item.icon %>
+                                </a>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <% if (page.frontmatter.layout === 'home') { %>
+            <main class="VPContent is-home">
+                <div class="VPHome">
+                    <% if (page.frontmatter.hero) { %>
+                    <section class="VPHero">
+                        <div class="container">
+                            <div class="main">
+                                <h1 class="name"><span class="clip"><%= page.frontmatter.hero.name || page.frontmatter.hero.title %></span></h1>
+                                <p class="text"><%= page.frontmatter.hero.text || page.frontmatter.hero.subtitle %></p>
+                                <p class="tagline"><%= page.frontmatter.hero.tagline || page.frontmatter.hero.badge %></p>
+                                <%
+                                    let heroActions = [];
+                                    if (page.frontmatter.hero.actions) {
+                                        if (Array.isArray(page.frontmatter.hero.actions)) {
+                                            heroActions = page.frontmatter.hero.actions;
+                                        } else if (typeof page.frontmatter.hero.actions === 'object') {
+                                            const actions = page.frontmatter.hero.actions;
+                                            if (actions.primary) {
+                                                heroActions.push({
+                                                    text: actions.primary.label,
+                                                    link: actions.primary.href || (actions.primary.targetId ? '#' + actions.primary.targetId : '#'),
+                                                    theme: 'brand'
+                                                });
+                                            }
+                                            if (actions.secondary) {
+                                                heroActions.push({
+                                                    text: actions.secondary.label,
+                                                    link: actions.secondary.href || (actions.secondary.targetId ? '#' + actions.secondary.targetId : '#'),
+                                                    theme: 'alt'
+                                                });
+                                            }
+                                        }
+                                    }
+                                %>
+                                <% if (heroActions.length > 0) { %>
+                                <div class="actions">
+                                    <% heroActions.forEach(function(action) { %>
+                                    <div class="action">
+                                        <a class="action-btn <%= action.theme === 'brand' ? 'primary' : 'secondary' %>" href="<%= toRelative(action.link) %>">
+                                            <%= action.text %>
+                                        </a>
+                                    </div>
+                                    <% }); %>
+                                </div>
+                                <% } %>
+                                
+                                <% if (page.frontmatter.hero.meta) { %>
+                                <div class="meta"><%= page.frontmatter.hero.meta %></div>
+                                <% } %>
+                            </div>
+                            <% 
+                                const heroPreview = page.frontmatter.hero.preview || page.frontmatter.preview;
+                            %>
+                            <% if (page.frontmatter.hero.image) { %>
+                            <div class="image">
+                                <div class="image-container">
+                                    <img src="<%= toRelative(page.frontmatter.hero.image.src || page.frontmatter.hero.image) %>" alt="<%= page.frontmatter.hero.image.alt || 'hero image' %>">
+                                </div>
+                            </div>
+                            <% } else if (heroPreview) { %>
+                            <div class="preview">
+                                <div class="preview-wrapper">
+                                    <div class="preview-header">
+                                        <%= heroPreview.header %>
+                                    </div>
+                                    <div class="preview-container">
+                                        <div class="preview-editor">
+                                            <div class="preview-filename"><%= heroPreview.editor.filename %></div>
+                                            <pre class="preview-code"><%= heroPreview.editor.content %></pre>
+                                        </div>
+                                        <div class="preview-render">
+                                            <div class="preview-render-title"><%= heroPreview.render.title %></div>
+                                            <ul>
+                                                <% heroPreview.render.items.forEach(function(item) { %>
+                                                <li><%= item %></li>
+                                                <% }); %>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <%
+                        let features = [];
+                        if (page.frontmatter.features) {
+                            if (Array.isArray(page.frontmatter.features)) {
+                                features = page.frontmatter.features;
+                            } else if (Array.isArray(page.frontmatter.features.items)) {
+                                features = page.frontmatter.features.items;
+                            }
+                        }
+                    %>
+                    <% if (features.length > 0) { %>
+                    <section class="VPFeatures">
+                        <div class="container">
+                            <div class="items">
+                                <% features.forEach(function(feature) { %>
+                                <div class="item">
+                                    <div class="VPFeature">
+                                        <% if (feature.category) { %>
+                                        <div class="feature-category"><%= feature.category %></div>
+                                        <% } %>
+                                        <h2 class="title"><%= feature.title %></h2>
+                                        <p class="details"><%= feature.details || feature.description %></p>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.gettingStarted) { %>
+                    <section class="HomeSection HomeGettingStarted">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">快速上手</h2>
+                            </div>
+                            <div class="home-grid">
+                                <% page.frontmatter.gettingStarted.forEach(function(item) { %>
+                                <div class="home-card">
+                                    <h3 class="home-card-title"><%= item.title %></h3>
+                                    <p class="home-card-details"><%= item.details %></p>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.workflow) { %>
+                    <section class="HomeSection HomeWorkflow" id="workflow">
+                        <div class="container">
+                            <div class="workflow-grid">
+                                <div class="workflow-content">
+                                    <h2 class="section-title"><%= page.frontmatter.workflow.title || page.frontmatter.workflow.sectionTitle %></h2>
+                                    <p class="section-subtitle"><%= page.frontmatter.workflow.subtitle || page.frontmatter.workflow.sectionSubtitle %></p>
+                                    <ol class="workflow-steps">
+                                        <% page.frontmatter.workflow.steps.forEach(function(step) { %>
+                                        <li class="workflow-step"><%= step %></li>
+                                        <% }); %>
+                                    </ol>
+                                </div>
+                                <% if (page.frontmatter.workflow.panel) { %>
+                                <div class="workflow-panel">
+                                    <div class="workflow-panel-header"><%= page.frontmatter.workflow.panel.title %></div>
+                                    <ul class="workflow-panel-list">
+                                        <% page.frontmatter.workflow.panel.items.forEach(function(item) { %>
+                                        <li><%= item %></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% 
+                        const useCasesData = page.frontmatter.useCases || page.frontmatter.usecases;
+                    %>
+                    <% if (useCasesData) { 
+                        const ucItems = useCasesData.cards || useCasesData.items || (Array.isArray(useCasesData) ? useCasesData : []);
+                    %>
+                    <% if (ucItems.length > 0) { %>
+                    <section class="HomeSection HomeUseCases" id="usecases">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title"><%= useCasesData.sectionTitle || useCasesData.title || '典型场景' %></h2>
+                                <% if (useCasesData.sectionSubtitle || useCasesData.subtitle) { %>
+                                <p class="section-subtitle"><%= useCasesData.sectionSubtitle || useCasesData.subtitle %></p>
+                                <% } %>
+                            </div>
+                            <div class="home-grid">
+                                <% ucItems.forEach(function(item) { %>
+                                <div class="home-card">
+                                    <div class="home-card-content">
+                                        <h3 class="home-card-title"><%= item.title %></h3>
+                                        <p class="home-card-details"><%= item.details || item.description %></p>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+                    <% } %>
+
+                    <% if (page.frontmatter.stats) { %>
+                    <section class="HomeSection HomeStats">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">项目数据</h2>
+                            </div>
+                            <div class="stats-list">
+                                <% page.frontmatter.stats.forEach(function(stat) { %>
+                                <div class="stat-item">
+                                    <div class="stat-value"><%= stat.value %></div>
+                                    <div class="stat-label"><%= stat.label %></div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.testimonials) { %>
+                    <section class="HomeSection HomeTestimonials">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">用户评价</h2>
+                            </div>
+                            <div class="testimonials">
+                                <% page.frontmatter.testimonials.forEach(function(t) { %>
+                                <div class="testimonial-item">
+                                    <p class="testimonial-quote">“<%= t.quote %>”</p>
+                                    <p class="testimonial-meta">
+                                        <span class="testimonial-author"><%= t.author %></span>
+                                        <% if (t.role) { %>
+                                        <span class="testimonial-role"> · <%= t.role %></span>
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.logos) { %>
+                    <section class="HomeSection HomeLogos">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">谁在使用</h2>
+                            </div>
+                            <div class="logos">
+                                <% page.frontmatter.logos.forEach(function(logo) { %>
+                                <a class="logo-item" href="<%= toRelative(logo.link) %>" target="_blank" rel="noopener">
+                                    <span class="logo-name"><%= logo.name %></span>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.faq) { %>
+                    <section class="HomeSection HomeFAQ">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">常见问题</h2>
+                            </div>
+                            <div class="faq-list">
+                                <% page.frontmatter.faq.forEach(function(item) { %>
+                                <div class="faq-item">
+                                    <div class="faq-question"><%= item.question %></div>
+                                    <div class="faq-answer"><%= item.answer %></div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.resources) { %>
+                    <section class="HomeSection HomeResources">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">更多资源</h2>
+                            </div>
+                            <div class="links-grid">
+                                <% page.frontmatter.resources.forEach(function(resource) { %>
+                                <a class="link-card" href="<%= toRelative(resource.link) %>">
+                                    <div class="link-title"><%= resource.title %></div>
+                                    <% if (resource.description) { %>
+                                    <p class="link-description"><%= resource.description %></p>
+                                    <% } %>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.community) { %>
+                    <section class="HomeSection HomeCommunity">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">加入社区</h2>
+                            </div>
+                            <div class="links-inline">
+                                <% page.frontmatter.community.forEach(function(link) { %>
+                                <a class="link-pill" href="<%= toRelative(link.link) %>" target="_blank" rel="noopener">
+                                    <span class="link-pill-label"><%= link.label %></span>
+                                </a>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.changelog) { %>
+                    <section class="VPFeatures" style="padding-top: 24px;">
+                        <div class="container">
+                            <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                                <h2 class="section-title" style="font-size: 24px; font-weight: 600;">更新日志</h2>
+                            </div>
+                            <div class="items">
+                                <% page.frontmatter.changelog.forEach(function(item) { %>
+                                <div class="item">
+                                    <div class="VPFeature" style="height: 100%; display: flex; flex-direction: column;">
+                                        <% if (item.image) { %>
+                                        <div style="margin-bottom: 16px;">
+                                            <img src="<%= item.image %>" alt="<%= item.title || item.version || '' %>" style="width: 100%; border-radius: 8px; border: 1px solid var(--vp-c-divider);">
+                                        </div>
+                                        <% } %>
+                                        <% if (item.video) { %>
+                                        <div style="margin-bottom: 16px;">
+                                            <video controls style="width: 100%; border-radius: 8px;">
+                                                <source src="<%= item.video %>" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        <% } %>
+                                        
+                                        <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                                            <% if (item.date) { %>
+                                            <div style="font-size: 14px; color: var(--vp-c-text-2); font-weight: 500;"><%= item.date %></div>
+                                            <% } %>
+                                            <% if (item.tag) { %>
+                                            <div style="padding: 2px 8px; border-radius: 4px; background-color: var(--vp-c-bg-alt); color: var(--vp-c-brand); font-size: 12px; font-weight: 600;"><%= item.tag %></div>
+                                            <% } %>
+                                        </div>
+
+                                        <h2 class="title" style="margin: 0 0 8px; font-size: 18px; font-weight: 600; line-height: 1.4; border: none; padding: 0;"><%= item.title || item.version %></h2>
+                                        
+                                        <% if (item.description || item.summary) { %>
+                                        <p class="details" style="font-size: 14px; color: var(--vp-c-text-2); line-height: 1.6; flex-grow: 1; margin-bottom: 16px;"><%= item.description || item.summary %></p>
+                                        <% } %>
+                                        
+                                        <% if (item.link) { %>
+                                        <div style="margin-top: auto;">
+                                            <a href="<%= toRelative(item.link) %>" target="_blank" rel="noreferrer" style="color: var(--vp-c-brand); font-size: 14px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                                View details &rarr;
+                                            </a>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.roadmap) { %>
+                    <section class="HomeSection HomeRoadmap">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">产品路线图</h2>
+                            </div>
+                            <div class="roadmap-grid">
+                                <% page.frontmatter.roadmap.forEach(function(item) { %>
+                                <div class="roadmap-item">
+                                    <div class="roadmap-title-row">
+                                        <span class="roadmap-title"><%= item.title %></span>
+                                        <% if (item.status) { %>
+                                        <span class="roadmap-status"><%= item.status %></span>
+                                        <% } %>
+                                    </div>
+                                    <% if (item.timeframe) { %>
+                                    <div class="roadmap-timeframe"><%= item.timeframe %></div>
+                                    <% } %>
+                                    <% if (item.description) { %>
+                                    <p class="roadmap-description"><%= item.description %></p>
+                                    <% } %>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                    <% if (page.frontmatter.download) { 
+                        const downloadData = page.frontmatter.download;
+                        const downloadItems = Array.isArray(downloadData) ? downloadData : (downloadData.platforms || downloadData.items || []);
+                        const modalTitle = (downloadData.modalTitle) ? downloadData.modalTitle : ('下载 ' + site.title);
+                    %>
+                    <% if (downloadItems.length > 0) { %>
+                    <div id="download-modal" class="modal-overlay" style="display: none;">
+                        <div class="modal-container">
+                            <div class="modal-header">
+                                <h3 class="modal-title"><%= modalTitle %></h3>
+                                <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="download-grid">
+                                    <% downloadItems.forEach(function(option) { %>
+                                    <div class="download-card">
+                                        <div class="download-icon"><%- option.icon %></div>
+                                        <div class="download-name"><%= option.name %></div>
+                                        <div class="download-variants">
+                                            <% option.variants.forEach(function(variant) { %>
+                                            <a class="download-link" href="<%= variant.url %>" data-key="<%= variant.key %>">
+                                                <%= variant.label %>
+                                            </a>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function openDownloadModal(e) {
+                            if (e) e.preventDefault();
+                            const modal = document.getElementById('download-modal');
+                            if (modal) {
+                                modal.style.display = 'flex';
+                                document.body.style.overflow = 'hidden';
+                            }
+                        }
+                        function closeDownloadModal() {
+                            const modal = document.getElementById('download-modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                                document.body.style.overflow = '';
+                            }
+                        }
+                        // Close on click outside
+                        document.addEventListener('click', function(e) {
+                            const modal = document.getElementById('download-modal');
+                            if (modal && e.target === modal) {
+                                closeDownloadModal();
+                            }
+                        });
+                        // Attach to download buttons
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const downloadBtns = document.querySelectorAll('a[href="#download"]');
+                            downloadBtns.forEach(btn => {
+                                btn.addEventListener('click', openDownloadModal);
+                            });
+                        });
+                    </script>
+                    <% } %>
+                    <% } %>
+
+                    <div class="vp-doc container">
+                        <% if (page.steps && page.steps.length > 0) { %>
+                        <div class="mdp-step-timeline">
+                            <% page.steps.forEach(function(step, index) { %>
+                            <div class="mdp-step-item">
+                                <div class="mdp-step-item-index"><%= index + 1 %></div>
+                                <div class="mdp-step-item-content">
+                                    <h2 class="mdp-step-title"><%= step.title %></h2>
+                                    <% if (step.kind === 'tab') { %>
+                                    <div class="mdp-step-tabs">
+                                        <div class="mdp-step-tabs-nav">
+                                            <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                            <button class="mdp-step-tab <%= tabIndex === 0 ? 'mdp-step-tab-active' : '' %>" 
+                                                    onclick="switchStepTab(this, '<%= step.id %>', <%= tabIndex %>)">
+                                                <%= tab.label %>
+                                            </button>
+                                            <% }); %>
+                                        </div>
+                                        <div class="mdp-step-tab-body">
+                                            <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                            <div class="mdp-step-tab-content" id="<%= step.id %>-tab-<%= tabIndex %>" style="display: <%= tabIndex === 0 ? 'block' : 'none' %>">
+                                                <% if (tab.description) { %>
+                                                <p class="mdp-step-tab-description"><%= tab.description %></p>
+                                                <% } %>
+                                                <% if (tab.linkLabel && tab.linkUrl) { %>
+                                                <a href="<%= tab.linkUrl %>" class="mdp-step-tab-link" target="_blank"><%= tab.linkLabel %> →</a>
+                                                <% } %>
+                                            </div>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                    <% if (step.warning) { %>
+                                    <div class="mdp-step-warning">
+                                        <span class="mdp-step-warning-icon">!</span>
+                                        <span class="mdp-step-warning-text"><%= step.warning %></span>
+                                    </div>
+                                    <% } %>
+                                    <% } else { %>
+                                    <ol class="mdp-step-list">
+                                        <% step.items.forEach(function(item) { %>
+                                        <li class="mdp-step-list-item">
+                                            <div class="mdp-step-list-title"><%= item.title %></div>
+                                            <% if (item.details) { %>
+                                            <div class="mdp-step-list-details"><%= item.details %></div>
+                                            <% } %>
+                                        </li>
+                                        <% }); %>
+                                    </ol>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                        <%- page.content %>
+                    </div>
+                    
+                    <% 
+                        const footer = page.frontmatter.footer || site.themeConfig.footer;
+                    %>
+                    <% if (footer) { %>
+                    <footer class="VPFooter">
+                        <div class="container">
+                            <% if (footer.brand || footer.message) { %>
+                            <p class="message"><%= footer.brand || footer.message %></p>
+                            <% } %>
+                            <% if (footer.meta || footer.copyright) { %>
+                            <p class="copyright"><%= footer.meta || footer.copyright %></p>
+                            <% } %>
+                        </div>
+                    </footer>
+                    <% } %>
+                </div>
+            </main>
+        <% } else if (page.frontmatter.layout === 'tags') { %>
+            <div class="VPContent is-doc is-tags">
+                <aside class="VPSidebar">
+                    <nav class="VPSidebarNav">
+                        <!-- DEBUG INFO START -->
+                        <div style="font-size: 10px; color: red; padding: 10px; background: #ffebeb; border-bottom: 1px solid #ffcccc; word-break: break-all; margin-bottom: 10px;">
+                            <strong>Debug (v2025-02-01-FIX-3):</strong><br>
+                            Path: "<%= (page.htmlLink || ('/' + page.relativePath.replace(/\\/g, '/').replace(/\.md$/, '.html'))).replace(/index\.html$/, '') || '/' %>"<br>
+                            Sidebar Keys: [<%= Object.keys(site.themeConfig.sidebar || {}).join(', ') %>]<br>
+                        </div>
+                        <!-- DEBUG INFO END -->
+                        <% 
+                        let sidebarItems = [];
+                        if (site.themeConfig.sidebar) {
+                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\\/g, '/').replace(/\.md$/, '.html')));
+                            const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
+                            // Sort keys by length desc to match longest prefix first
+                            const keys = Object.keys(site.themeConfig.sidebar).sort((a, b) => b.length - a.length);
+                            for (const path of keys) {
+                                if (currentPath.startsWith(path) || (path === '/' && currentPath === '/')) {
+                                    sidebarItems = site.themeConfig.sidebar[path];
+                                    break;
+                                }
+                            }
+
+                            // Fix for tags page: if no sidebar matched, try to use /docs/ or the first available sidebar
+                            if ((!sidebarItems || sidebarItems.length === 0) && page.frontmatter.layout === 'tags') {
+                                if (site.themeConfig.sidebar['/docs/']) {
+                                    sidebarItems = site.themeConfig.sidebar['/docs/'];
+                                } else if (site.themeConfig.sidebar['/']) {
+                                    sidebarItems = site.themeConfig.sidebar['/'];
+                                } else if (keys.length > 0) {
+                                    sidebarItems = site.themeConfig.sidebar[keys[0]];
+                                }
+                            }
+                        }
+                        
+                        if (sidebarItems && sidebarItems.length > 0) {
+                            sidebarItems.forEach(function(group) {
+                        %>
+                            <div class="group">
+                                <% if (group.text) { %>
+                                <div class="group-header">
+                                    <div class="group-title"><%= group.text %></div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <% } %>
+                                <div class="group-items">
+                                    <% if (group.items) { %>
+                                        <% group.items.forEach(function(item) { 
+                                            const currentLink = page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html'));
+                                            const isActive = item.link === currentLink;
+                                        %>
+                                            <a class="link <%= isActive ? 'active' : '' %>" href="<%= toRelative(item.link) %>">
+                                                <p class="link-text"><%= item.text %></p>
+                                            </a>
+                                        <% }); %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% 
+                            });
+                        } else {
+                        %>
+                            <!-- Fallback sidebar or empty -->
+                            <div class="group">
+                                <div class="group-title">Menu</div>
+                                <a class="link" href="<%= toRelative('/index.html') %>">Home</a>
+                            </div>
+                        <% } %>
+                    </nav>
+                </aside>
+                <div class="VPContentDoc">
+                    <main>
+                        <div class="vp-doc">
+                            <h1 id="tags-title">Tags</h1>
+                            <div class="custom-block tip" style="margin-bottom: 2rem; background-color: transparent; border: none; padding: 0;">
+                                 <div id="tags-cloud" class="tags-cloud-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                     <% if (page.tags) { %>
+                                         <% Object.keys(page.tags).forEach(function(tag) { %>
+                                         <a class="tag-link" href="?tag=<%= tag %>" data-tag="<%= tag %>" 
+                                            style="padding: 4px 12px; background: var(--vp-c-bg-soft); border-radius: 16px; color: var(--vp-c-text-1); text-decoration: none; font-size: 14px; transition: all 0.2s; border: 1px solid transparent;">
+                                             <%= tag %> <span style="color: var(--vp-c-text-3); font-size: 0.8em;">(<%= page.tags[tag].length %>)</span>
+                                         </a>
+                                         <% }); %>
+                                     <% } %>
+                                 </div>
+                            </div>
+                            <div id="tags-content">
+                                <div class="custom-block tip">
+                                    <p class="custom-block-title">Select a tag</p>
+                                    <p>Please select a tag to view related articles.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+            <div id="debug-console" style="background: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin: 20px; font-family: monospace; font-size: 12px; max-height: 200px; overflow: auto; display: block;">
+                <strong>Debug Console (v2025-02-01-FIX):</strong><br>
+            </div>
+            <script>
+                console.log('Layout Script Loaded - v2025-02-01-FIX');
+                (function() {
+                    var relativeRoot = "<%= page.relativeRoot || './' %>";
+                    
+                    function toRelative(link) {
+                        if (!link) return '#';
+                        if (link.startsWith('http') || link.startsWith('https') || link.startsWith('//')) return link;
+                        if (link.startsWith('#')) return link;
+                        
+                        var cleanLink = link;
+                        if (link.startsWith('/')) {
+                            cleanLink = link.substring(1);
+                        }
+                        return relativeRoot + cleanLink;
+                    }
+
+                    function debug(msg) {
+                        console.log(msg);
+                        var el = document.getElementById('debug-console');
+                        if (el) {
+                            var line = document.createElement('div');
+                            line.textContent = msg;
+                            el.appendChild(line);
+                        }
+                    }
+                    
+                    try {
+                        debug('Script initialized');
+                        
+                        var rawTagsData = <%- JSON.stringify(page.tags || {}) %>;
+                        debug('Tags data loaded: ' + Object.keys(rawTagsData).length + ' tags');
+                        
+                        var tagsData = rawTagsData;
+                        var sidebarConfig = <%- JSON.stringify(site.themeConfig.sidebar || {}) %>;
+                        debug('Sidebar config keys: ' + Object.keys(sidebarConfig).join(', '));
+                        
+                        var urlParams = new URLSearchParams(window.location.search);
+                        var currentTag = urlParams.get('tag');
+                        var currentContext = urlParams.get('context');
+                        
+                        debug('Current Tag: ' + currentTag);
+                        debug('Current Context: ' + currentContext);
+
+                        // Render Sidebar if context provided
+                        if (currentContext) {
+                            if (sidebarConfig[currentContext]) {
+                                debug('Found sidebar for context: ' + currentContext);
+                                var sidebarItems = sidebarConfig[currentContext];
+                                var nav = document.querySelector('.VPSidebarNav');
+                                if (nav) {
+                                    debug('Found .VPSidebarNav, rendering sidebar...');
+                                    var html = '';
+                                    sidebarItems.forEach(function(group) {
+                                        html += '<div class="group">';
+                                        if (group.text) {
+                                            html += '<div class="group-header">';
+                                            html += '<div class="group-title">' + group.text + '</div>';
+                                            html += '<svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>';
+                                            html += '</div>';
+                                        }
+                                        html += '<div class="group-items">';
+                                        if (group.items) {
+                                            group.items.forEach(function(item) {
+                                                html += '<a class="link" href="' + toRelative(item.link) + '">';
+                                                html += '<p class="link-text">' + item.text + '</p>';
+                                                html += '</a>';
+                                            });
+                                        }
+                                        html += '</div>';
+                                        html += '</div>';
+                                    });
+                                    nav.innerHTML = html;
+                                    debug('Sidebar rendered successfully');
+                                } else {
+                                    debug('Error: .VPSidebarNav element not found');
+                                }
+                            } else {
+                                debug('Error: No sidebar config found for context: ' + currentContext);
+                            }
+                        } else {
+                            debug('No context provided in URL');
+                        }
+                        
+                        function renderArticles(tag) {
+                            // ... existing renderArticles logic ...
+
+                        var container = document.getElementById('tags-content');
+                        var title = document.getElementById('tags-title');
+                        
+                        if (!tag || !tagsData[tag]) {
+                            title.textContent = 'Tags';
+                            return; 
+                        }
+                        
+                        title.textContent = 'Tag: ' + tag;
+                        
+                        var articles = tagsData[tag];
+                        var html = '<div class="links-grid">';
+                        
+                        articles.forEach(function(article) {
+                             html += '<a class="link-card" href="' + toRelative(article.link) + '">';
+                             html += '<div class="link-title">' + article.title + '</div>';
+                             if (article.description) {
+                                 html += '<p class="link-description">' + article.description + '</p>';
+                             }
+                             if (article.date) {
+                                 html += '<p class="link-meta" style="font-size: 0.8em; color: var(--vp-c-text-2); margin-top: 8px;">' + new Date(article.date).toLocaleDateString() + '</p>';
+                             }
+                             html += '</a>';
+                        });
+                        
+                        html += '</div>';
+                        container.innerHTML = html;
+                    }
+                    
+                    var links = document.querySelectorAll('.tag-link');
+                    
+                    function updateActiveTag(tag) {
+                        links.forEach(l => {
+                            if (l.getAttribute('data-tag') === tag) {
+                                l.style.borderColor = 'var(--vp-c-brand)';
+                                l.style.color = 'var(--vp-c-brand)';
+                                l.style.background = 'var(--vp-c-bg-alt)';
+                            } else {
+                                l.style.borderColor = 'transparent';
+                                l.style.color = 'var(--vp-c-text-1)';
+                                l.style.background = 'var(--vp-c-bg-soft)';
+                            }
+                        });
+                    }
+
+                    links.forEach(function(link) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            var newTag = this.getAttribute('data-tag');
+                            var currentContext = new URLSearchParams(window.location.search).get('context');
+                            var newUrl = window.location.pathname + '?tag=' + newTag;
+                            if (currentContext) {
+                                newUrl += '&context=' + encodeURIComponent(currentContext);
+                            }
+                            window.history.pushState({path: newUrl}, '', newUrl);
+                            
+                            updateActiveTag(newTag);
+                            renderArticles(newTag);
+                        });
+                    });
+                    
+                    if (currentTag) {
+                        updateActiveTag(currentTag);
+                        renderArticles(currentTag);
+                    }
+                    
+                    window.onpopstate = function() {
+                        var t = new URLSearchParams(window.location.search).get('tag');
+                        updateActiveTag(t);
+                        renderArticles(t);
+                    };
+                    
+                    } catch (e) {
+                        debug('Error: ' + e.message);
+                        console.error(e);
+                    }
+                })();
+            </script>
+        <% } else if (page.frontmatter.layout === 'changelog') { %>
+            <main class="VPContent is-changelog">
+                <div class="VPHome">
+                    <section class="VPHero">
+                        <div class="container">
+                            <div class="main">
+                                <% if (page.title) { %>
+                                <h1 class="name"><span class="clip"><%= page.title %></span></h1>
+                                <% } %>
+                                <% if (page.description) { %>
+                                <p class="tagline"><%= page.description %></p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="container">
+                        <% if (page.frontmatter.changelog && page.frontmatter.changelog.length > 0) { %>
+                        <div class="changelog-timeline-page">
+                            <% page.frontmatter.changelog.forEach(function(entry, index) { %>
+                            <div class="changelog-page-item">
+                                <div class="changelog-page-date-col">
+                                    <div class="changelog-page-date"><%= entry.date %></div>
+                                </div>
+                                <div class="changelog-page-marker-col">
+                                    <div class="changelog-page-dot"></div>
+                                    <% if (index !== page.frontmatter.changelog.length - 1) { %>
+                                    <div class="changelog-page-line"></div>
+                                    <% } %>
+                                </div>
+                                <div class="changelog-page-content-col">
+                                    <% if (entry.image) { %>
+                                    <div class="changelog-page-media" style="margin-bottom: 16px;">
+                                        <img src="<%= toRelative(entry.image) %>" alt="<%= entry.title %>">
+                                    </div>
+                                    <% } %>
+                                    
+                                    <% if (entry.video) { %>
+                                    <div class="changelog-page-media" style="margin-bottom: 16px;">
+                                        <video controls style="width: 100%; border-radius: 8px;">
+                                            <source src="<%= toRelative(entry.video) %>" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                    <% } %>
+
+                                    <h2 class="changelog-page-title"><%= entry.title %></h2>
+                                    
+                                    <% if (entry.description) { %>
+                                    <div class="changelog-page-desc"><%= entry.description %></div>
+                                    <% } %>
+
+                                    <% if (entry.tag) { %>
+                                    <div class="changelog-page-tag"><%= entry.tag %></div>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
+                        
+                        <div class="vp-doc">
+                            <%- page.content %>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        <% } else { %>
+            <div class="VPContent is-doc">
+                <aside class="VPSidebar">
+                    <nav class="VPSidebarNav">
+                        <% 
+                        let sidebarItems = [];
+                        let activeSidebarContext = '';
+                        if (site.themeConfig.sidebar) {
+                            const currentPathRaw = (page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html')));
+                            const currentPath = currentPathRaw.replace(/index\.html$/, '') || '/';
+                            // Sort keys by length desc to match longest prefix first
+                            const keys = Object.keys(site.themeConfig.sidebar).sort((a, b) => b.length - a.length);
+                            for (const path of keys) {
+                                if (currentPath.startsWith(path) || (path === '/' && currentPath === '/')) {
+                                    sidebarItems = site.themeConfig.sidebar[path];
+                                    activeSidebarContext = path;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (sidebarItems && sidebarItems.length > 0) {
+                            sidebarItems.forEach(function(group) {
+                        %>
+                            <div class="group">
+                                <% if (group.text) { %>
+                                <div class="group-header">
+                                    <div class="group-title"><%= group.text %></div>
+                                    <svg class="caret-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                    </svg>
+                                </div>
+                                <% } %>
+                                <div class="group-items">
+                                    <% if (group.items) { %>
+                                        <% group.items.forEach(function(item) { 
+                                            const currentLink = page.htmlLink || ('/' + page.relativePath.replace(/\.md$/, '.html'));
+                                            const isActive = item.link === currentLink;
+                                        %>
+                                            <a class="link <%= isActive ? 'active' : '' %>" href="<%= toRelative(item.link) %>">
+                                                <p class="link-text"><%= item.text %></p>
+                                            </a>
+                                        <% }); %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% 
+                            });
+                        } else {
+                        %>
+                            <!-- Fallback sidebar or empty -->
+                            <div class="group">
+                                <div class="group-title">Menu</div>
+                                <a class="link" href="<%= toRelative('/index.html') %>">Home</a>
+                            </div>
+                        <% } %>
+                    </nav>
+                </aside>
+                
+                <div class="VPContentDoc">
+                     <main>
+                        <div class="vp-doc">
+                            
+                            <% if (page.title) { %>
+                            <h1 id="<%= page.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') %>"><%= page.title %></h1>
+                            <% } %>
+
+                            <% 
+                               const pageTags = page.frontmatter.tag || page.frontmatter.tags;
+                               if (pageTags) { 
+                            %>
+                            <!-- DEBUG: currentPath=<%= page.htmlLink %>, activeSidebarContext=<%= activeSidebarContext %> -->
+                            <div class="meta-info" style="margin-bottom: 24px; color: var(--vp-c-text-2); font-size: 14px;">
+                                <span style="font-weight: 600; margin-right: 10px;">Tags:</span>
+                                <span class="tags">
+                                    <% 
+                                       const tagsList = Array.isArray(pageTags) ? pageTags : [pageTags];
+                                       tagsList.forEach(function(tag) { 
+                                    %>
+                                    <a href="<%= toRelative('/tags.html') %>?tag=<%= tag %><%= activeSidebarContext ? '&context=' + encodeURIComponent(activeSidebarContext) : '' %>" class="tag" style="background: var(--vp-c-bg-soft); padding: 2px 8px; border-radius: 4px; margin-right: 4px; color: inherit; text-decoration: none; cursor: pointer;"><%= tag %></a>
+                                    <% }); %>
+                                </span>
+                            </div>
+                            <% } %>
+
+                            <% if (page.steps && page.steps.length > 0) { %>
+                            <div class="mdp-step-timeline">
+                                <% page.steps.forEach(function(step, index) { %>
+                                <div class="mdp-step-item">
+                                    <div class="mdp-step-item-index"><%= index + 1 %></div>
+                                    <div class="mdp-step-item-content">
+                                        <h2 class="mdp-step-title"><%= step.title %></h2>
+                                        <% if (step.kind === 'tab') { %>
+                                        <div class="mdp-step-tabs">
+                                            <div class="mdp-step-tabs-nav">
+                                                <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                                <button class="mdp-step-tab <%= tabIndex === 0 ? 'mdp-step-tab-active' : '' %>" 
+                                                        onclick="switchStepTab(this, '<%= step.id %>', <%= tabIndex %>)">
+                                                    <%= tab.label %>
+                                                </button>
+                                                <% }); %>
+                                            </div>
+                                            <div class="mdp-step-tab-body">
+                                                <% step.tabs.forEach(function(tab, tabIndex) { %>
+                                                <div class="mdp-step-tab-content" id="<%= step.id %>-tab-<%= tabIndex %>" style="display: <%= tabIndex === 0 ? 'block' : 'none' %>">
+                                                    <% if (tab.description) { %>
+                                                    <p class="mdp-step-tab-description"><%= tab.description %></p>
+                                                    <% } %>
+                                                    <% if (tab.linkLabel && tab.linkUrl) { %>
+                                                    <a href="<%= tab.linkUrl %>" class="mdp-step-tab-link" target="_blank"><%= tab.linkLabel %> →</a>
+                                                    <% } %>
+                                                </div>
+                                                <% }); %>
+                                            </div>
+                                        </div>
+                                        <% if (step.warning) { %>
+                                        <div class="mdp-step-warning">
+                                            <span class="mdp-step-warning-icon">!</span>
+                                            <span class="mdp-step-warning-text"><%= step.warning %></span>
+                                        </div>
+                                        <% } %>
+                                        <% } else { %>
+                                        <ol class="mdp-step-list">
+                                            <% step.items.forEach(function(item) { %>
+                                            <li class="mdp-step-list-item">
+                                                <div class="mdp-step-list-title"><%= item.title %></div>
+                                                <% if (item.details) { %>
+                                                <div class="mdp-step-list-details"><%= item.details %></div>
+                                                <% } %>
+                                            </li>
+                                            <% }); %>
+                                        </ol>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                            <% } %>
+                            <%- page.content %>
+                        </div>
+                     </main>
+                     
+                     <% if (site.themeConfig.footer) { %>
+                     <footer class="VPFooter">
+                        <% if (site.themeConfig.footer.message) { %>
+                        <p class="message"><%= site.themeConfig.footer.message %></p>
+                        <% } %>
+                        <% if (site.themeConfig.footer.copyright) { %>
+                        <p class="copyright"><%= site.themeConfig.footer.copyright %></p>
+                        <% } %>
+                     </footer>
+                     <% } %>
+                </div>
+
+                <% if (page.headers && page.headers.length > 0) { %>
+                <aside class="VPRightSidebar">
+                    <div class="VPRightSidebar-content">
+                        <div class="outline-title">On this page</div>
+                        <nav class="outline-links">
+                            <% page.headers.forEach(function(header) { %>
+                                <% if (header.level >= 2 && header.level <= 3) { %>
+                                <a class="outline-link level-<%= header.level %>" href="#<%= header.slug %>"><%= header.title %></a>
+                                <% } %>
+                            <% }); %>
+                        </nav>
+                    </div>
+                </aside>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+    <script>
+        (function() {
+            // Hamburger Menu
+            var menuToggle = document.querySelector('.menu-toggle');
+            var body = document.body;
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    if (body.classList.contains('nav-open')) {
+                        body.classList.remove('nav-open');
+                    } else {
+                        body.classList.add('nav-open');
+                    }
+                });
+            }
+
+            // Dark Mode Toggle
+            var appearanceToggle = document.querySelector('.VPSwitchAppearance');
+            var sunIcon = document.querySelector('.VPSwitchAppearance .sun');
+            var moonIcon = document.querySelector('.VPSwitchAppearance .moon');
+            
+            function updateIcon(isDark) {
+                if (sunIcon) sunIcon.style.display = isDark ? 'block' : 'none';
+                if (moonIcon) moonIcon.style.display = isDark ? 'none' : 'block';
+            }
+
+            // Init icon
+            updateIcon(document.documentElement.classList.contains('dark'));
+
+            if (appearanceToggle) {
+                appearanceToggle.addEventListener('click', function() {
+                    var isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('mdpress-theme', isDark ? 'dark' : 'light');
+                    updateIcon(isDark);
+                });
+            }
+
+
+            // Scroll Spy & TOC Features
+            (function() {
+                var contentDoc = document.querySelector('.VPContentDoc .vp-doc');
+                if (!contentDoc) return;
+
+                function findScrollParent(startEl) {
+                    var el = startEl;
+                    while (el && el !== document.body) {
+                        var style = window.getComputedStyle(el);
+                        var overflowY = style ? style.overflowY : '';
+                        if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 1) {
+                            return el;
+                        }
+                        el = el.parentElement;
+                    }
+                    return document.scrollingElement || document.documentElement;
+                }
+
+                var scrollEl = findScrollParent(contentDoc);
+                var documentScrollEl = document.scrollingElement || document.documentElement;
+                var isDocumentScroll = scrollEl === documentScrollEl || scrollEl === document.documentElement || scrollEl === document.body;
+
+                var headers = Array.from(contentDoc.querySelectorAll('h2[id], h3[id]'));
+                var outlineLinks = document.querySelectorAll('.VPRightSidebar .outline-link');
+                var activeId = '';
+                var isClickScrolling = false; // Flag to prevent observer updates during click scroll
+
+                function getScrollTop() {
+                    if (isDocumentScroll) return window.scrollY || document.documentElement.scrollTop || 0;
+                    return scrollEl.scrollTop || 0;
+                }
+
+                function getScrollHeight() {
+                    if (isDocumentScroll) return Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0);
+                    return scrollEl.scrollHeight || 0;
+                }
+
+                function getViewportHeight() {
+                    if (isDocumentScroll) return window.innerHeight || document.documentElement.clientHeight || 0;
+                    return scrollEl.clientHeight || 0;
+                }
+
+                function scrollToTop(top) {
+                    if (isDocumentScroll) {
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    } else {
+                        scrollEl.scrollTo({ top: top, behavior: 'smooth' });
+                    }
+                }
+
+                function getHeaderTop(headerEl) {
+                    var rect = headerEl.getBoundingClientRect();
+                    if (isDocumentScroll) return rect.top;
+                    var containerRect = scrollEl.getBoundingClientRect();
+                    return rect.top - containerRect.top;
+                }
+
+                function getElementTopInScroll(el, offset) {
+                    var rect = el.getBoundingClientRect();
+                    if (isDocumentScroll) {
+                        return rect.top + getScrollTop() - offset;
+                    }
+                    var containerRect = scrollEl.getBoundingClientRect();
+                    return rect.top - containerRect.top + getScrollTop() - offset;
+                }
+
+                // Throttle Utility
+                function throttle(func, limit) {
+                    var inThrottle;
+                    return function() {
+                        var args = arguments;
+                        var context = this;
+                        if (!inThrottle) {
+                            func.apply(context, args);
+                            inThrottle = true;
+                            setTimeout(function() { inThrottle = false; }, limit);
+                        }
+                    }
+                }
+
+                // Update Active State in Sidebar
+                function updateSidebar(id) {
+                    if (!id || isClickScrolling) return;
+                    if (activeId === id) return;
+                    
+                    activeId = id;
+                    
+                    // Update URL hash without jumping (throttled)
+                    updateHash(id);
+
+                    // Update classes
+                    var activeLink = null;
+                    outlineLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                        var href = link.getAttribute('href');
+                        if (href && (href === '#' + id || decodeURIComponent(href) === '#' + id)) {
+                            link.classList.add('active');
+                            activeLink = link;
+                        }
+                    });
+
+                    // Auto-scroll sidebar
+                    if (activeLink) {
+                        var sidebarContent = document.querySelector('.VPRightSidebar-content');
+                        if (sidebarContent) {
+                            var linkRect = activeLink.getBoundingClientRect();
+                            var sidebarRect = sidebarContent.getBoundingClientRect();
+                            if (linkRect.top < sidebarRect.top + 32) {
+                                sidebarContent.scrollTop += (linkRect.top - sidebarRect.top - 32);
+                            } else if (linkRect.bottom > sidebarRect.bottom - 32) {
+                                sidebarContent.scrollTop += (linkRect.bottom - sidebarRect.bottom + 32);
+                            }
+                        }
+                    }
+                }
+
+                // Throttled Hash Update
+                var updateHash = throttle(function(id) {
+                    if (history.replaceState) {
+                        history.replaceState(null, null, '#' + id);
+                    }
+                }, 300);
+
+                var onScroll = throttle(checkActivePosition, 100);
+                document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+                window.addEventListener('resize', onScroll, { passive: true });
+                window.addEventListener('hashchange', function() {
+                    var raw = location.hash ? location.hash.substring(1) : '';
+                    if (!raw) return;
+                    var decoded = '';
+                    try { decoded = decodeURIComponent(raw); } catch (err) { decoded = raw; }
+                    var targetHeader = document.getElementById(raw) || document.getElementById(decoded);
+                    if (targetHeader) updateSidebar(targetHeader.id);
+                });
+                checkActivePosition();
+
+                function checkActivePosition() {
+                    if (isClickScrolling) return;
+                    
+                    var topOffset = 100;
+                    var currentActive = null;
+
+                    for (var i = 0; i < headers.length; i++) {
+                        var rect = headers[i].getBoundingClientRect();
+                        if (rect.top <= topOffset) {
+                            currentActive = headers[i];
+                        }
+                    }
+
+                    if (currentActive) {
+                        updateSidebar(currentActive.id);
+                    } else if (headers.length > 0) {
+                        // If no header is above (at very top), highlight first
+                         updateSidebar(headers[0].id);
+                    }
+                }
+
+                // Smooth Scroll on Click
+                document.querySelectorAll('.VPRightSidebar .outline-link').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var href = this.getAttribute('href');
+                        if (!href || !href.startsWith('#')) return;
+                        var id = href.substring(1);
+                        var decodedId = '';
+                        try { decodedId = decodeURIComponent(id); } catch (err) { decodedId = id; }
+                        var target = document.getElementById(id) || document.getElementById(decodedId);
+                        if (!target && contentDoc) {
+                            target = contentDoc.querySelector('[id="' + id + '"]') || contentDoc.querySelector('[id="' + decodedId + '"]');
+                        }
+                        
+                        if (target) {
+                            isClickScrolling = true;
+                            // Remove active from others, add to this
+                            outlineLinks.forEach(function(l) { l.classList.remove('active'); });
+                            this.classList.add('active');
+                            activeId = target.id;
+                            updateHash(target.id);
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                            // Re-enable observer after scroll (approximate duration)
+                            setTimeout(function() { isClickScrolling = false; }, 700);
+                        } else {
+                            location.hash = '#' + id;
+                            setTimeout(function() { isClickScrolling = false; }, 0);
+                        }
+                    });
+                });
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', function(e) {
+                    // Only if sidebar exists
+                    if (outlineLinks.length === 0) return;
+                    
+                    // Up/Down arrows
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        // Find current active index
+                        var currentIndex = -1;
+                        for (var i = 0; i < outlineLinks.length; i++) {
+                            if (outlineLinks[i].classList.contains('active')) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (currentIndex === -1 && outlineLinks.length > 0) currentIndex = 0;
+
+                        var nextIndex = currentIndex;
+                        if (e.key === 'ArrowDown') {
+                            nextIndex = Math.min(currentIndex + 1, outlineLinks.length - 1);
+                        } else if (e.key === 'ArrowUp') {
+                            nextIndex = Math.max(currentIndex - 1, 0);
+                        }
+
+                        if (nextIndex !== currentIndex) {
+                            e.preventDefault();
+                            outlineLinks[nextIndex].click(); // Trigger the click handler
+                        }
+                    }
+                });
+
+            })();
+
+            // Layout Fixer
+            function fixLayout() {
+                // Force Sidebar Top Position
+                var sidebar = document.querySelector('.VPSidebar');
+                if (sidebar) {
+                     sidebar.style.setProperty('top', '64px', 'important');
+                }
+                
+                // Force Right Sidebar Top Position
+                var rightSidebar = document.querySelector('.VPRightSidebar');
+                if (rightSidebar) {
+                     rightSidebar.style.setProperty('top', '64px', 'important');
+                }
+            }
+            window.addEventListener('resize', fixLayout);
+            window.addEventListener('load', function() {
+                fixLayout();
+                setTimeout(fixLayout, 100);
+            });
+            fixLayout();
+
+            // Move Category/Tag to below Title
+            function moveMeta() {
+                var doc = document.querySelector('.vp-doc');
+                if (doc) {
+                    var title = doc.querySelector('h1');
+                    var meta = doc.querySelector('.meta-info');
+                    if (title && meta) {
+                        title.after(meta);
+                        meta.style.marginBottom = '24px';
+                        meta.style.marginTop = '16px';
+                        meta.style.display = 'block'; // Ensure visibility
+                    } else if (meta && !title) {
+                        // If no title found (rare), maybe try to insert at top or keep as is?
+                        // For now, let's just ensure it's visible.
+                        meta.style.marginBottom = '24px';
+                    }
+                }
+            }
+            
+            // Execute immediately and on load/DOMReady
+            moveMeta();
+            window.addEventListener('DOMContentLoaded', moveMeta);
+            window.addEventListener('load', moveMeta);
+
+            // Sidebar Toggle
+            document.querySelectorAll('.VPSidebar .group-header').forEach(function(header) {
+                header.addEventListener('click', function() {
+                    var group = header.parentElement;
+                    group.classList.toggle('collapsed');
+                });
+            });
+        })();
+    </script>
+    <script>
+        function switchStepTab(button, stepId, tabIndex) {
+            const tabsContainer = button.closest('.mdp-step-tabs');
+            const buttons = tabsContainer.querySelectorAll('.mdp-step-tab');
+            buttons.forEach(btn => btn.classList.remove('mdp-step-tab-active'));
+            button.classList.add('mdp-step-tab-active');
+            
+            const contents = tabsContainer.querySelectorAll('.mdp-step-tab-content');
+            contents.forEach(content => content.style.display = 'none');
+            
+            const targetContent = tabsContainer.querySelector(`#${stepId}-tab-${tabIndex}`);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
